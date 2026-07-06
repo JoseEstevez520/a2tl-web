@@ -1,0 +1,39 @@
+UIDL/1
+theme light
+layout stack
+
+h1 "Comparativa de frameworks de memoria para agentes"
+text "Estado del arte en gestion de memoria y contexto para agentes IA. Julio 2026." dim
+
+cards 2
+  card "Mem0" "Memoria hibrida (short/long term)" "Open-source, 24k stars"
+  card "Letta (ex-MemGPT)" "Agentes stateful con memoria" "Paging inspirado en OS"
+  card "Cognee" "Grafos de conocimiento automaticos" "Enriquecimiento semantico"
+  card "Zep" "Memoria comercial para agentes" "API SaaS, knowledge graph"
+
+table "Comparativa tecnica"
+  cols Framework Tipo Almacenamiento Escalabilidad Licencia
+  row "Mem0" "Hibrida" "Vector + Graph" "Alta" "Apache 2.0"
+  row "Letta" "Stateful" "SQLite + LLM" "Media" "Apache 2.0"
+  row "Cognee" "Graph" "Neo4j / Networkx" "Alta" "Apache 2.0"
+  row "Zep" "Comercial" "Cloud propietario" "Alta" "Propietario"
+  row "LangMem" "SDK" "Cualquier store" "Variable" "MIT"
+
+chart radar "Capacidades por framework"
+  axes "Memoria corta" "Memoria larga" "Grafos" "Escalabilidad" "Facilidad uso"
+  series "Mem0" 90 85 70 80 85 blue
+  series "Letta" 95 75 50 60 70 green
+  series "Cognee" 60 80 95 75 65 purple
+  series "Zep" 85 80 85 90 80 orange
+
+chart bar "Estrellas GitHub (julio 2026)"
+  x "Mem0" "Letta" "Cognee" "LangMem" "Zep"
+  y 24000 12500 8200 3100 2800
+
+text "Ninguno resuelve el problema completo. Mem0 lidera en popularidad pero su modelo hibrido tiene gaps en grafos. Cognee es el mas solido en representacion de conocimiento pero mas complejo de integrar." insight
+
+list "Tendencias clave"
+  Convergencia hacia grafos de conocimiento como backend
+  Integracion nativa con MCP como capa de transporte
+  Separacion entre memoria episodica y semantica
+  Ausencia de estandar compartido entre frameworks

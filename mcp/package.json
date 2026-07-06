@@ -1,0 +1,18 @@
+{
+  "name": "mcp-ui-renderer",
+  "version": "1.0.0",
+  "description": "MCP server: render_page tool — UIDL spec → standalone HTML page",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  }
+}

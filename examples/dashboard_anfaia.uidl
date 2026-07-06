@@ -1,0 +1,39 @@
+UIDL/1
+theme dark
+layout stack
+
+h1 "Dashboard ANFAIA — Fronteras Semanticas"
+text "Benchmark de clasificacion de acceso. Julio 2026." dim
+
+metrics 3
+  "LODO" "78.2%" orange "techo intrinseco"
+  "Holdout" "90.0%" green "160 docs nuevos"
+  "Intra-subject" "93.2%" cyan "5-fold CV"
+  "GER+PII" "1.2%" purple "vs 2.5% sin PII"
+  "Few-shot K=5" "80.1%" green "rompe el 78%"
+  "Experimentos" "36+" yellow "sesion completa"
+
+text "La funcion contenido-acceso NO es inyectiva. 78.2% es el techo intrinseco del LODO. Pero 5 ejemplos etiquetados del dominio nuevo lo rompen." highlight
+
+chart bar "LODO por dominio (%)"
+  x "Legal" "Restauracion" "Clinica" "RRHH" "Educacion" "Finanzas" "Admin" "Tecnologia"
+  y 90.6 85 81.2 75.6 75.6 75.6 71.9 70
+
+chart line "Few-shot: accuracy vs ejemplos etiquetados"
+  x 0 3 5 10 20 40 160
+  series "Accuracy" 78.2 79.1 80.1 81.3 82.8 86.7 90.0 green
+  series "F1-score" 75.0 76.1 77.2 78.5 80.0 84.0 88.0 blue
+
+table "Errores graves del holdout"
+  cols Dominio Tipo True Pred Severidad
+  row "Restauracion" "Certificado formacion" REST PUB 3
+  row "Restauracion" "Anexo contractual" REST PUB 3
+  row "Finanzas" "Due diligence" CONF PUB 2
+  row "Finanzas" "Estrategia precios" CONF PUB 2
+
+text "14/16 errores son under-classification (el modelo clasifica como menos sensible de lo que es). PII floor rules reducen GER a la mitad." insight
+
+cards 3
+  card "Mejor modelo" "Intra-subject" "93% accuracy"
+  card "Dataset" "PhysioNet CHB-MIT" "23 pacientes"
+  card "Framework" "PyTorch + LoRA" "Fine-tuning 4-bit"
