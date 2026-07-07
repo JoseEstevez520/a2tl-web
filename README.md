@@ -21,16 +21,12 @@ AI generates UIDL (~450 tok)  →  Local renderer (ms)  →  Standalone HTML
 
 ### Same page, measured
 
-```
-┌────────────┬──────────────┬────────┐
-│            │ Raw HTML     │ UIDL   │
-├────────────┼──────────────┼────────┤
-│ Bytes      │ 6,160        │ 1,541  │
-│ Lines      │ 83           │ 43     │
-│ Tokens (~) │ ~1,760       │ ~440   │
-│ Ratio      │ 100%         │ 25%    │
-└────────────┴──────────────┴────────┘
-```
+|            | Raw HTML | UIDL   |
+|------------|----------|--------|
+| Bytes      | 6,160    | 1,541  |
+| Lines      | 83       | 43     |
+| Tokens (~) | ~1,760   | ~440   |
+| Ratio      | 100%     | 25%    |
 
 Same dashboard, same charts, same data. Same LLM generating both.
 
