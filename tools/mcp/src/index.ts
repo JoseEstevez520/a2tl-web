@@ -35,18 +35,7 @@ function openInBrowser(filePath: string): void {
   });
 }
 
-function parseSpec(input: string, format: string): UIDLSpec {
-  if (format === 'json') {
-    const raw = JSON.parse(input);
-    // Adapt UIMin JSON format → UIDLSpec
-    return {
-      version: 1,
-      theme: raw.page?.theme || raw.theme || 'light',
-      layout: raw.page?.layout || raw.layout || 'stack',
-      title: raw.page?.title || raw.title || '',
-      sections: raw.sections || [],
-    };
-  }
+function parseSpec(input: string): UIDLSpec {
   return parseUIDL(input);
 }
 
@@ -83,14 +72,13 @@ UIDL format example:
 
 Supported components: h1, h2, h3, text, hr, metrics, chart (bar/line/pie/radar/scatter), table, cards, list, code, collapse.`,
   {
-    spec: z.string().describe('UIDL or JSON spec string'),
-    format: z.enum(['uidl', 'json']).default('uidl').describe('Input format: "uidl" (default) or "json"'),
+    spec: z.string().describe('UIDL spec string'),
     filename: z.string().optional().describe('Output filename (without .html). Defaults to timestamp.'),
     open: z.boolean().default(true).describe('Open in browser after generating'),
   },
-  async ({ spec: specInput, format, filename, open: openBrowser }) => {
+  async ({ spec: specInput, filename, open: openBrowser }) => {
     try {
-      const parsed = parseSpec(specInput, format);
+      const parsed = parseSpec(specInput);
       const html = renderHTML(parsed);
 
       const name = filename || `page_${Date.now()}`;
