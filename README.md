@@ -1,7 +1,7 @@
 <p align="center">
   <h1 align="center">uidl</h1>
   <p align="center">
-    <strong>A compact DSL for AI-generated web pages — 4x fewer tokens than raw HTML</strong>
+    <strong>Compact DSL for AI-generated web pages. 4x fewer tokens than raw HTML.</strong>
   </p>
   <p align="center">
     <img src="https://img.shields.io/badge/tokens-75%25_savings-orange?style=flat-square" alt="Token savings">
@@ -13,19 +13,11 @@
 
 ---
 
-> The AI decides **what** to show. The renderer decides **how**. Zero tokens wasted on CSS, HTML, or JavaScript.
-
-## The problem
-
-Generative content is the next layer of the web. LLMs are already writing reports, dashboards, and personalized pages — but they generate thousands of tokens of HTML+CSS+JS boilerplate to do it. That's slow, expensive, and wasteful.
-
-UIDL separates **content** from **presentation**. The AI emits a compact spec (~450 tokens) describing what to show. A local renderer expands it into a full standalone HTML page with charts, tables, and styling — instantly, at zero cost.
+The AI writes **what** to show. The renderer handles **how**. Zero tokens on CSS, HTML, or JS.
 
 ```
-AI generates UIDL (~450 tok)  →  Local renderer (ms)  →  Standalone HTML page
+AI generates UIDL (~450 tok)  →  Local renderer (ms)  →  Standalone HTML
 ```
-
-This isn't just about saving tokens. It's about making generative UI practical: fast enough for real-time, cheap enough for every user, and deterministic enough to trust.
 
 ### Same page, measured
 
@@ -40,16 +32,13 @@ This isn't just about saving tokens. It's about making generative UI practical: 
 └────────────┴──────────────┴────────┘
 ```
 
-Same dashboard. Same charts. Same data. Measured by having the same LLM generate both formats for the same page.
+Same dashboard, same charts, same data. Same LLM generating both.
 
-## How it contributes to generative content
+## Why this matters
 
-Generative UI means the interface adapts to each user in real time — not pre-designed screens, but pages built on the fly by an AI that knows what you need. The bottleneck is generation speed and cost:
+LLMs already generate dashboards, reports, and personalized pages. The bottleneck is cost and speed. Every page costs ~1,760 tokens of HTML boilerplate. At scale, that's slow and expensive.
 
-- **Without UIDL:** every page costs ~1,760 tokens and ~3.5 seconds of generation. At scale (hundreds of users, personalized pages), that's expensive and slow.
-- **With UIDL:** same page costs ~440 tokens and ~0.9 seconds. The renderer is local, so expansion to HTML is instant. You can generate personalized pages for every user without breaking the budget.
-
-UIDL makes generative content economically viable. The spec is small enough to stream in real time, and the renderer is deterministic — same spec always produces the same page.
+UIDL separates content from presentation. The AI emits a compact spec. A local renderer expands it to full HTML with charts, tables, and styling. The spec is small enough to stream in real time, and the renderer is deterministic.
 
 ## Example
 
@@ -73,121 +62,89 @@ table "Details"
   row Bob 82 B
 ```
 
-~80 tokens. Generates a standalone `.html` with Chart.js charts, responsive layout, dark theme, ready to open.
+~80 tokens. Standalone HTML with Chart.js, responsive, dark theme.
 
 ## Usage
-
-```bash
-node tools/generate.js examples/dashboard_anfaia.uidl output/dashboard.html
-```
-
-## Components
-
-| Component | What it renders | Syntax |
-|---|---|---|
-| `h1` `h2` `h3` | Headings | `h1 "Text"` |
-| `text` | Paragraph with style | `text "..." highlight\|insight\|dim` |
-| `hr` | Separator | `hr` |
-| `metrics N` | KPI card grid | `"label" "value" color "note"` |
-| `chart bar` | Bar chart | `x` + `y` |
-| `chart line` | Line chart (multi-series) | `x` + `series "name" data color` |
-| `chart pie` | Pie/donut chart | `"segment" value color` |
-| `chart radar` | Radar chart | `axes` + `series` |
-| `chart scatter` | Scatter plot | `x` + `y` |
-| `table` | Styled table | `cols` + `row` |
-| `cards N` | Info card grid | `card "title" "sub" "value"` |
-| `list` | Bullet list | `- "item"` |
-| `code` | Code block | `code lang` + indented lines |
-| `collapse` | Collapsible section | indented content |
-
-## SkillNet prototypes
-
-4 real-world scenarios from a corporate training platform, showing how the same tool generates completely different UIs depending on the user:
-
-| Prototype | Scenario | UIDL | HTML | Savings |
-|---|---|---|---|---|
-| `skillnet_pepito_nuevo` | New employee, learning path | ~379 tok | ~2,855 tok | 87% |
-| `skillnet_maria_veterana` | Manager, team dashboard | ~439 tok | ~3,103 tok | 86% |
-| `skillnet_tutor_revisa` | AI tutor view, diagnostics | ~505 tok | ~3,081 tok | 84% |
-| `skillnet_crossdomain_legal` | Same platform for a law firm | ~486 tok | ~3,217 tok | 85% |
-
-```bash
-node tools/generate.js examples/skillnet_pepito_nuevo.uidl output/pepito.html
-```
-
-## 3 ways to use
-
-### 1. CLI (zero dependencies)
 
 ```bash
 node tools/generate.js input.uidl output.html
 ```
 
-### 2. MCP Server (for Claude Code, Cursor, etc.)
+## Components
+
+| Component | Syntax |
+|---|---|
+| `h1` `h2` `h3` | `h1 "Text"` |
+| `text` | `text "..." highlight\|insight\|dim` |
+| `metrics N` | `"label" "value" color "note"` |
+| `chart bar\|line\|pie\|radar\|scatter` | `x` + `y` or `series` |
+| `table` | `cols` + `row` |
+| `cards N` | `card "title" "sub" "value"` |
+| `list` | `- "item"` |
+| `code` | `code lang` + indented lines |
+| `collapse` | indented content |
+| `hr` | `hr` |
+
+## SkillNet prototypes
+
+4 scenarios showing how the same tool generates different UIs per user:
+
+| Prototype | Scenario | UIDL | HTML | Savings |
+|---|---|---|---|---|
+| `skillnet_pepito_nuevo` | New employee, learning path | ~379 tok | ~2,855 tok | 87% |
+| `skillnet_maria_veterana` | Manager, team dashboard | ~439 tok | ~3,103 tok | 86% |
+| `skillnet_tutor_revisa` | AI tutor diagnostics | ~505 tok | ~3,081 tok | 84% |
+| `skillnet_crossdomain_legal` | Same platform, law firm | ~486 tok | ~3,217 tok | 85% |
+
+## 3 ways to use
+
+### CLI
+
+```bash
+node tools/generate.js input.uidl output.html
+```
+
+### MCP Server
 
 ```bash
 cd tools/mcp && npm install && npm run build
 claude mcp add uidl -- node /path/to/uidl/tools/mcp/dist/index.js
 ```
 
-The agent calls the `render_page(spec)` tool directly.
+### Agent skill
 
-### 3. Agent skill
-
-Copy `skill/uidl.md` into your skill/prompt system. The agent learns the format and generates UIDL natively — no MCP needed.
+Copy `skill/uidl.md` into your prompt system. The agent learns the format natively.
 
 ## Repo structure
 
 ```
 uidl/
-├── skill/
-│   └── uidl.md              # Agent skill — copy this to teach any AI the format
-├── tools/
-│   ├── parser.js             # UIDL text → internal spec
-│   ├── renderer.js           # Spec → standalone HTML
-│   ├── generate.js           # CLI entry point
-│   └── mcp/                  # MCP server (TypeScript)
-│       └── src/
-├── examples/                 # Example .uidl specs
-│   ├── dashboard_anfaia.uidl
-│   ├── skillnet_pepito_nuevo.uidl
-│   ├── skillnet_maria_veterana.uidl
-│   ├── skillnet_tutor_revisa.uidl
-│   └── skillnet_crossdomain_legal.uidl
+├── skill/           # Teach any AI agent the format
+│   └── uidl.md
+├── tools/           # Parse and render
+│   ├── parser.js
+│   ├── renderer.js
+│   ├── generate.js
+│   └── mcp/
+├── examples/        # .uidl specs
 └── README.md
 ```
 
-**`skill/`** teaches the agent the format. **`tools/`** processes the format. Pick one or both.
+`skill/` teaches. `tools/` executes. Pick one or both.
 
 ## Format rules
 
 1. First line: `UIDL/1`
 2. Components at column 0, properties indented 2 spaces
 3. Strings with spaces in double quotes
-4. Numbers are auto-parsed
-5. Colors by name (`red`, `green`, `blue`...) or hex (`#4f46e5`)
-6. Empty lines close the indented block
-7. Comments with `//`
-
-## Tech stack
-
-| Layer | Detail |
-|---|---|
-| **Renderer** | Vanilla HTML + CSS + JS. No React. No build step. |
-| **Charts** | Chart.js via CDN |
-| **Styling** | Dark theme by default, clean modern look |
-| **MCP** | TypeScript + @modelcontextprotocol/sdk |
+4. Colors by name (`red`, `green`, `blue`) or hex (`#4f46e5`)
+5. Empty lines close blocks
+6. Comments with `//`
 
 ## Origin
 
-Built as part of [ANFAIA](https://anfaia.org) research on token-efficient UI generation for AI agents (July 2026). The idea: instead of the AI generating 2000 lines of React, it emits 40 lines of spec and a local renderer does the rest.
+Built during [ANFAIA](https://anfaia.org) research on token-efficient UI generation for AI agents (July 2026).
 
 ## License
 
 MIT
-
----
-
-<p align="center">
-  <em>Technology adapts to us, not us to it.</em>
-</p>
