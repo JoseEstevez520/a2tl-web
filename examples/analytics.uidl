@@ -1,0 +1,36 @@
+UIDL/1
+theme dark
+
+h1 "SaaS Analytics Dashboard"
+text "Monthly overview — July 2026" dim
+
+metrics 4
+  "Active Users" "12.4k" green "+8.2% MoM"
+  "MRR" "$84.5k" blue "+12.3% MoM"
+  "Churn Rate" "2.1%" red "-0.4pp"
+  "Avg Session" "6m 32s" cyan "+18s"
+
+chart line "User Growth"
+  x "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul"
+  series "Active" 8200 8900 9400 10100 10800 11500 12400 green
+  series "New" 1200 1400 1100 1500 1300 1600 1800 blue
+
+chart bar "Revenue by Plan"
+  x "Free" "Starter" "Pro" "Enterprise"
+  y 0 12500 38000 34000
+
+chart pie "Traffic Sources"
+  "Organic Search" 42 green
+  "Direct" 28 blue
+  "Referral" 18 purple
+  "Social" 12 orange
+
+table "Top Pages"
+  cols Page Views "Bounce Rate" "Avg Time"
+  row "/dashboard" 8420 "18%" "4m 12s"
+  row "/pricing" 5130 "42%" "2m 05s"
+  row "/docs/quickstart" 3890 "25%" "5m 48s"
+  row "/blog/launch" 2710 "55%" "1m 33s"
+  row "/signup" 2340 "31%" "1m 15s"
+
+text "Organic search drives 42% of traffic with the lowest bounce rate. Consider increasing content investment." insight

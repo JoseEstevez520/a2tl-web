@@ -13,28 +13,39 @@
 
 ---
 
-The AI writes **what** to show. The renderer handles **how**. Zero tokens on CSS, HTML, or JS.
+The AI writes **what** to show. The renderer handles **how**. Zero tokens wasted on CSS, HTML boilerplate, or JS.
 
 ```
-AI generates UIDL (~450 tok)  →  Local renderer (ms)  →  Standalone HTML
+AI generates UIDL (~350 tok)  →  Local renderer (ms)  →  Standalone HTML page
 ```
 
 ### Same page, measured
 
 |            | Raw HTML | UIDL   |
 |------------|----------|--------|
-| Bytes      | 6,160    | 1,541  |
-| Lines      | 83       | 43     |
-| Tokens (~) | ~1,760   | ~440   |
-| Ratio      | 100%     | 25%    |
+| Bytes      | 10,370   | 1,035  |
+| Tokens (~) | ~2,963   | ~296   |
+| Ratio      | 100%     | 10%    |
 
 Same dashboard, same charts, same data. Same LLM generating both.
 
 ## Why this matters
 
-LLMs already generate dashboards, reports, and personalized pages. The bottleneck is cost and speed. Every page costs ~1,760 tokens of HTML boilerplate. At scale, that's slow and expensive.
+LLMs already generate dashboards, reports, and data pages. The bottleneck is cost and speed — every page costs thousands of tokens in HTML/CSS/JS boilerplate. At scale, that's slow and expensive.
 
-UIDL separates content from presentation. The AI emits a compact spec. A local renderer expands it to full HTML with charts, tables, and styling. The spec is small enough to stream in real time, and the renderer is deterministic.
+UIDL separates content from presentation. The AI emits a compact spec. A local renderer expands it to full HTML with Chart.js charts, responsive tables, and styled components. The spec is small enough to stream in real time, and the renderer is deterministic.
+
+## Quick start
+
+```bash
+# Clone and generate a page
+git clone https://github.com/JoseEstevez520/uidl.git
+cd uidl
+node tools/generate.js examples/analytics.uidl output/analytics.html
+
+# Or use the CLI
+node tools/cli.js render examples/analytics.uidl
+```
 
 ## Example
 
@@ -42,29 +53,53 @@ UIDL separates content from presentation. The AI emits a compact spec. A local r
 UIDL/1
 theme dark
 
-h1 "Dashboard"
-metrics 3
-  "Users" "1.2k" green "active"
-  "Revenue" "$45k" blue
-  "Errors" "0.3%" red
+h1 "SaaS Analytics Dashboard"
+text "Monthly overview — July 2026" dim
 
-chart bar "Sales by region"
-  x "North" "South" "East"
-  y 120 85 95
+metrics 4
+  "Active Users" "12.4k" green "+8.2% MoM"
+  "MRR" "$84.5k" blue "+12.3% MoM"
+  "Churn Rate" "2.1%" red "-0.4pp"
+  "Avg Session" "6m 32s" cyan "+18s"
 
-table "Details"
-  cols Name Score Grade
-  row Alice 95 A
-  row Bob 82 B
+chart line "User Growth"
+  x "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul"
+  series "Active" 8200 8900 9400 10100 10800 11500 12400 green
+  series "New" 1200 1400 1100 1500 1300 1600 1800 blue
+
+chart pie "Traffic Sources"
+  "Organic Search" 42 green
+  "Direct" 28 blue
+  "Referral" 18 purple
+  "Social" 12 orange
 ```
 
-~80 tokens. Standalone HTML with Chart.js, responsive, dark theme.
+~296 tokens. Generates a standalone HTML page with Chart.js charts, responsive metrics cards, and dark theme styling.
 
-## Usage
+## Examples
 
+| Example | Description | UIDL tokens | HTML tokens | Savings |
+|---|---|---|---|---|
+| `analytics.uidl` | SaaS analytics dashboard with users, revenue, traffic | ~296 | ~2,963 | 90% |
+| `project-status.uidl` | Sprint review with burndown, blockers, team board | ~283 | ~2,931 | 90% |
+| `api-health.uidl` | API monitoring with latency, errors, incidents | ~396 | ~3,095 | 87% |
+| `sales-report.uidl` | Monthly sales by region, product, and team | ~333 | ~3,060 | 89% |
+| `startup-pitch.uidl` | Investor update with MRR, cohorts, unit economics | ~397 | ~3,208 | 88% |
+
+Generate any example:
 ```bash
-node tools/generate.js input.uidl output.html
+node tools/generate.js examples/sales-report.uidl output/sales-report.html
 ```
+
+## Preview
+
+Each example generates a fully styled HTML page. Here's what the output includes:
+
+- **analytics.uidl** — Dark theme. 4 metric cards (users, MRR, churn, session time), line chart for user growth, bar chart for revenue by plan, pie chart for traffic sources, table with top pages.
+- **project-status.uidl** — Light theme. Sprint metrics, milestone progress bars, team workload table, burndown line chart, blockers list, deadline cards.
+- **api-health.uidl** — Dark theme. Uptime/latency/error metrics, response time line chart (P50/P95/P99), endpoint bar chart, error breakdown pie chart, incident table.
+- **sales-report.uidl** — Light theme. Revenue metrics, regional bar chart, year-over-year trend lines, product performance table, revenue share pie chart.
+- **startup-pitch.uidl** — Dark theme. MRR/ARR/runway metrics, growth line chart, unit economics cards, cohort retention table, revenue segmentation pie chart.
 
 ## Components
 
@@ -81,23 +116,14 @@ node tools/generate.js input.uidl output.html
 | `collapse` | indented content |
 | `hr` | `hr` |
 
-## SkillNet prototypes
-
-4 scenarios showing how the same tool generates different UIs per user:
-
-| Prototype | Scenario | UIDL | HTML | Savings |
-|---|---|---|---|---|
-| `skillnet_pepito_nuevo` | New employee, learning path | ~379 tok | ~2,855 tok | 87% |
-| `skillnet_maria_veterana` | Manager, team dashboard | ~439 tok | ~3,103 tok | 86% |
-| `skillnet_tutor_revisa` | AI tutor diagnostics | ~505 tok | ~3,081 tok | 84% |
-| `skillnet_crossdomain_legal` | Same platform, law firm | ~486 tok | ~3,217 tok | 85% |
-
 ## 3 ways to use
 
 ### CLI
 
 ```bash
 node tools/generate.js input.uidl output.html
+# or
+node tools/cli.js render input.uidl
 ```
 
 ### MCP Server
@@ -111,23 +137,6 @@ claude mcp add uidl -- node /path/to/uidl/tools/mcp/dist/index.js
 
 Copy `skill/uidl.md` into your prompt system. The agent learns the format natively.
 
-## Repo structure
-
-```
-uidl/
-├── skill/           # Teach any AI agent the format
-│   └── uidl.md
-├── tools/           # Parse and render
-│   ├── parser.js
-│   ├── renderer.js
-│   ├── generate.js
-│   └── mcp/
-├── examples/        # .uidl specs
-└── README.md
-```
-
-`skill/` teaches. `tools/` executes. Pick one or both.
-
 ## Format rules
 
 1. First line: `UIDL/1`
@@ -137,9 +146,34 @@ uidl/
 5. Empty lines close blocks
 6. Comments with `//`
 
+## Repo structure
+
+```
+uidl/
+├── tools/           # Parse and render
+│   ├── parser.js    # UIDL text → JSON spec
+│   ├── renderer.js  # JSON spec → standalone HTML
+│   ├── generate.js  # CLI: file → file
+│   ├── cli.js       # CLI with browser open
+│   └── mcp/         # MCP server
+├── skill/           # Teach any AI agent the format
+│   └── uidl.md
+├── examples/        # Sample .uidl specs
+├── tests/           # Test suite
+└── README.md
+```
+
+## Testing
+
+```bash
+npm test
+```
+
+Runs parser and renderer against all examples. Verifies parsing, rendering, HTML structure, and token savings.
+
 ## Origin
 
-Built during [ANFAIA](https://anfaia.org) research on token-efficient UI generation for AI agents (July 2026).
+Built during research on token-efficient UI generation for AI agents.
 
 ## License
 

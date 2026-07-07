@@ -1,0 +1,49 @@
+UIDL/1
+theme dark
+
+h1 "Acme Analytics — Investor Update"
+text "Series A metrics — July 2026" dim
+
+metrics 4
+  "MRR" "$84.5k" green "+14% MoM"
+  "ARR Run Rate" "$1.01M" blue "Crossed $1M"
+  "Runway" "18 months" cyan "$2.1M in bank"
+  "Burn Rate" "$115k/mo" orange "Down from $130k"
+
+chart line "MRR Growth"
+  x "Jan" "Feb" "Mar" "Apr" "May" "Jun" "Jul"
+  series "MRR ($k)" 42 48 54 61 68 74 84.5 green
+
+h2 "Unit Economics"
+
+cards 2
+  card "CAC" "Customer Acquisition Cost" "$320"
+  card "LTV" "Lifetime Value" "$4,800"
+  card "LTV:CAC" "Ratio" "15:1"
+  card "Payback" "Months to recover CAC" "2.1 months"
+
+chart bar "Customer Growth"
+  x "Q1" "Q2" "Q3" "Q4" "Q1 '26" "Q2 '26"
+  y 45 82 130 195 280 410
+
+h2 "Key Metrics"
+
+table "Cohort Retention"
+  cols Cohort "Month 1" "Month 3" "Month 6" "Month 12"
+  row "Q1 2025" "95%" "88%" "82%" "76%"
+  row "Q2 2025" "96%" "90%" "85%" "—"
+  row "Q3 2025" "97%" "92%" "—" "—"
+  row "Q4 2025" "97%" "93%" "—" "—"
+
+chart pie "Revenue by Segment"
+  "SMB" 35 blue
+  "Mid-Market" 45 green
+  "Enterprise" 20 purple
+
+text "Net revenue retention at 128%. Negative churn driven by expansion revenue from mid-market accounts upgrading to annual plans." insight
+
+list "Milestones This Quarter"
+  - "Crossed $1M ARR run rate"
+  - "Launched API v2 with 3 enterprise integrations"
+  - "Hired VP Sales — pipeline up 40%"
+  - "SOC 2 Type II certification completed"

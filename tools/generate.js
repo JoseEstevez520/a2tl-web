@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // generate.js — CLI: node generate.js input.uidl [output.html]
-// Lee un archivo .uidl, lo parsea y genera un .html standalone
+// Reads a .uidl file, parses it, and generates a standalone .html file
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
@@ -11,15 +11,15 @@ const args = process.argv.slice(2);
 
 if (args.length === 0 || args.includes('-h') || args.includes('--help')) {
   console.log(`
-uidl — genera paginas HTML desde specs UIDL
+uidl — generate HTML pages from UIDL specs
 
-Uso:
-  node generate.js <archivo.uidl> [salida.html]
+Usage:
+  node generate.js <file.uidl> [output.html]
 
-Si no se indica salida, se usa el mismo nombre con .html.
+If no output is specified, the input filename with .html extension is used.
 
-Ejemplo:
-  node generate.js examples/dashboard_anfaia.uidl output/dashboard.html
+Example:
+  node generate.js examples/analytics.uidl output/analytics.html
 `);
   process.exit(0);
 }
@@ -28,7 +28,7 @@ const inputFile = args[0];
 const outputFile = args[1] || inputFile.replace(/\.uidl$/, '.html');
 
 if (!existsSync(inputFile)) {
-  console.error(`Error: no existe "${inputFile}"`);
+  console.error(`Error: file not found "${inputFile}"`);
   process.exit(1);
 }
 
@@ -50,6 +50,6 @@ const savings = ((1 - uidlTokens / htmlTokens) * 100).toFixed(0);
 console.log(`${inputFile} → ${outputFile}`);
 console.log(`  UIDL:    ${uidlText.length} bytes (~${uidlTokens} tokens)`);
 console.log(`  HTML:    ${html.length} bytes (~${htmlTokens} tokens)`);
-console.log(`  Ahorro:  ${savings}%`);
+console.log(`  Savings: ${savings}%`);
 console.log(`  Theme:   ${spec.theme}`);
-console.log(`  Secciones: ${spec.sections.length}`);
+console.log(`  Sections: ${spec.sections.length}`);

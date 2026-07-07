@@ -2,10 +2,38 @@
   "name": "uidl",
   "version": "1.1.0",
   "type": "module",
-  "description": "Compact DSL for generating standalone HTML pages. 4x fewer tokens than raw HTML.",
-  "main": "parser.js",
+  "description": "Compact DSL that AI agents generate instead of raw HTML. A local renderer expands it to standalone pages with charts. 4x fewer tokens.",
+  "main": "tools/parser.js",
   "bin": {
-    "uidl": "generate.js"
+    "uidl": "tools/cli.js"
   },
-  "license": "MIT"
+  "scripts": {
+    "test": "node tests/test.js",
+    "generate": "node tools/generate.js"
+  },
+  "files": [
+    "tools/",
+    "skill/",
+    "examples/",
+    "README.md"
+  ],
+  "keywords": [
+    "uidl",
+    "generative-ui",
+    "html-generator",
+    "mcp",
+    "llm",
+    "token-efficient",
+    "dsl"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoseEstevez520/uidl.git"
+  },
+  "author": "Jose Estevez",
+  "license": "MIT",
+  "homepage": "https://github.com/JoseEstevez520/uidl#readme",
+  "bugs": {
+    "url": "https://github.com/JoseEstevez520/uidl/issues"
+  }
 }

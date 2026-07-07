@@ -1,0 +1,42 @@
+UIDL/1
+theme light
+
+h1 "Project Status Report"
+text "Q3 Sprint Review — Week 28" dim
+
+metrics 3
+  "Completion" "68%" green "On track"
+  "Open Issues" "23" orange "7 critical"
+  "Team Velocity" "42 pts" blue "+5 vs last sprint"
+
+h2 "Milestone Progress"
+
+chart bar "Milestones"
+  x "Auth System" "API v2" "Dashboard" "Mobile" "Docs"
+  y 100 85 60 35 20
+
+h2 "Team Workload"
+
+table "Sprint Board"
+  cols Member Done "In Progress" Blocked
+  row "Alice" 8 2 0
+  row "Bob" 6 3 1
+  row "Carol" 7 1 0
+  row "Dave" 5 2 2
+
+chart line "Burndown"
+  x "Mon" "Tue" "Wed" "Thu" "Fri"
+  series "Ideal" 50 40 30 20 0 blue
+  series "Actual" 50 45 38 30 23 orange
+
+h2 "Blockers"
+
+list "Current Blockers"
+  - "AWS IAM permissions pending approval (Dave)"
+  - "Third-party API rate limit hit — need upgraded plan"
+  - "Design review for mobile screens not scheduled"
+
+cards 3
+  card "Next Deadline" "API v2 Launch" "July 15"
+  card "Budget Used" "Engineering" "$42k / $60k"
+  card "Risk Level" "Schedule" "Medium"

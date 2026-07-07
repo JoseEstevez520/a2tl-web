@@ -1,4 +1,4 @@
-// parser.ts — UIDL v1 parser (UIDL text → JSON spec)
+// parser.js — UIDL v1 parser (UIDL text → JSON spec)
 const COLORS = new Set([
     'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'cyan', 'pink', 'white', 'black',
     'gray', 'grey', 'indigo', 'teal', 'emerald', 'amber', 'rose', 'violet', 'lime', 'sky',
@@ -180,7 +180,7 @@ export function parseUIDL(text) {
                 i++;
             }
             if (y && sec.series.length === 0) {
-                sec.series.push({ name: sec.title || 'Valor', data: y });
+                sec.series.push({ name: sec.title || 'Value', data: y });
             }
             result.sections.push(sec);
             continue;
@@ -246,7 +246,7 @@ export function parseUIDL(text) {
                 contentLines.push(lines[i].trimStart());
                 i++;
             }
-            result.sections.push({ type: 'collapse', title: t[1] ? String(t[1]) : 'Detalles', content: contentLines.join('\n') });
+            result.sections.push({ type: 'collapse', title: t[1] ? String(t[1]) : 'Details', content: contentLines.join('\n') });
             continue;
         }
         i++;

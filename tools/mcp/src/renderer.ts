@@ -212,7 +212,7 @@ export function renderHTML(spec: UIDLSpec): string {
   const charts = generateChartJS(spec);
 
   return `<!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -224,7 +224,7 @@ export function renderHTML(spec: UIDLSpec): string {
 </head>
 <body>
     ${body}
-    <div class="footer"><span>Generado con UIDL Renderer</span><span>${new Date().toISOString().slice(0,10)}</span></div>
+    <div class="footer"><span>Generated with UIDL Renderer</span><span>${new Date().toISOString().slice(0,10)}</span></div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
       Chart.defaults.font.family = "'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif";

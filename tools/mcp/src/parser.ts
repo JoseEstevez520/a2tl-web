@@ -168,7 +168,7 @@ export function parseUIDL(text: string): UIDLSpec {
         i++;
       }
       if (y && sec.series.length === 0) {
-        sec.series.push({ name: sec.title || 'Valor', data: y });
+        sec.series.push({ name: sec.title || 'Value', data: y });
       }
       result.sections.push(sec as any);
       continue;
@@ -235,7 +235,7 @@ export function parseUIDL(text: string): UIDLSpec {
         contentLines.push(lines[i].trimStart());
         i++;
       }
-      result.sections.push({ type: 'collapse', title: t[1] ? String(t[1]) : 'Detalles', content: contentLines.join('\n') });
+      result.sections.push({ type: 'collapse', title: t[1] ? String(t[1]) : 'Details', content: contentLines.join('\n') });
       continue;
     }
 

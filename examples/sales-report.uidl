@@ -1,0 +1,45 @@
+UIDL/1
+theme light
+
+h1 "Monthly Sales Report"
+text "June 2026 — All regions" dim
+
+metrics 3
+  "Total Revenue" "$1.24M" green "+15% YoY"
+  "Units Sold" "8,420" blue "+22% YoY"
+  "Avg Order Value" "$147" cyan "-3% YoY"
+
+h2 "Revenue by Region"
+
+chart bar "Regional Performance ($k)"
+  x "North America" "Europe" "Asia Pacific" "Latin America"
+  y 520 380 240 100
+
+chart line "Monthly Trend"
+  x "Jan" "Feb" "Mar" "Apr" "May" "Jun"
+  series "2026" 890 920 1050 1100 1180 1240 green
+  series "2025" 780 800 850 900 960 1080 blue
+
+h2 "Top Products"
+
+table "Product Performance"
+  cols Product Units Revenue Margin
+  row "Pro Plan" 2840 "$567k" "72%"
+  row "Starter Kit" 3200 "$384k" "65%"
+  row "Enterprise" 180 "$198k" "81%"
+  row "Add-ons" 2200 "$91k" "88%"
+
+chart pie "Revenue Share by Product"
+  "Pro Plan" 46 blue
+  "Starter Kit" 31 green
+  "Enterprise" 16 purple
+  "Add-ons" 7 orange
+
+h2 "Sales Team"
+
+cards 3
+  card "Top Rep" "Sarah Chen" "$182k closed"
+  card "Fastest Growth" "APAC Team" "+34% MoM"
+  card "Pipeline" "Q3 Forecast" "$3.8M"
+
+text "Enterprise segment shows highest margin at 81%. Consider shifting sales focus toward enterprise deals in Q3." insight

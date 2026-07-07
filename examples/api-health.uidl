@@ -1,0 +1,43 @@
+UIDL/1
+theme dark
+
+h1 "API Health Dashboard"
+text "Real-time monitoring — Last 24 hours" dim
+
+metrics 4
+  "Uptime" "99.97%" green "SLA: 99.9%"
+  "Avg Latency" "45ms" blue "P99: 210ms"
+  "Error Rate" "0.12%" green "< 0.5% target"
+  "Requests" "2.8M" cyan "24h total"
+
+chart line "Response Time (ms)"
+  x "00:00" "04:00" "08:00" "12:00" "16:00" "20:00" "24:00"
+  series "P50" 32 28 42 55 48 38 35 green
+  series "P95" 85 72 110 145 120 95 88 orange
+  series "P99" 120 105 180 250 195 140 130 red
+
+chart bar "Requests by Endpoint"
+  x "/api/users" "/api/orders" "/api/products" "/api/auth" "/api/search"
+  y 820000 650000 540000 480000 310000
+
+h2 "Error Breakdown"
+
+chart pie "Errors by Type"
+  "Timeout (504)" 38 red
+  "Bad Request (400)" 25 orange
+  "Not Found (404)" 20 yellow
+  "Server Error (500)" 12 purple
+  "Rate Limited (429)" 5 blue
+
+table "Recent Incidents"
+  cols Time Endpoint Status Duration Resolution
+  row "14:23" "/api/search" "504" "3m 12s" "Auto-recovered"
+  row "09:15" "/api/orders" "500" "45s" "Hotfix deployed"
+  row "02:41" "/api/auth" "429" "8m" "Rate limit adjusted"
+
+text "The 14:23 timeout spike correlates with a database connection pool exhaustion. Auto-scaling resolved it within 3 minutes." insight
+
+list "Action Items"
+  - "Increase connection pool size from 20 to 50"
+  - "Add circuit breaker to /api/search"
+  - "Set up PagerDuty alert for P99 > 300ms"

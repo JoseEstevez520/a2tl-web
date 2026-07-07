@@ -1,99 +1,97 @@
-# UIDL Skill — para agentes IA
+# UIDL Skill — for AI agents
 
-Copia este archivo en tu sistema de skills para que el agente sepa generar UIDL sin tener que leer ejemplos cada vez.
+Copy this file into your skill/prompt system so the agent can generate UIDL without reading examples every time.
 
-## Cuando usar
+## When to use
 
-Cuando el usuario pida generar una pagina web, dashboard, reporte visual, o cualquier UI standalone. En vez de escribir HTML+CSS+JS, escribir un spec UIDL y renderizarlo.
+When the user asks to generate a web page, dashboard, report, or any standalone UI. Instead of writing HTML+CSS+JS, write a UIDL spec and render it.
 
-**Ventaja:** ~4x menos tokens = mas rapido, mas barato, mismo resultado visual.
+**Advantage:** ~4x fewer tokens = faster, cheaper, same visual result.
 
-## Formato UIDL v1
+## UIDL v1 format
 
 ```
 UIDL/1
 theme dark|light
 layout stack
 
-h1 "Titulo principal"
-h2 "Subtitulo"
-text "Parrafo" dim|highlight|insight
+h1 "Main title"
+h2 "Subtitle"
+text "Paragraph" dim|highlight|insight
 hr
 
 metrics N
-  "Label" "Valor" color "Nota"
+  "Label" "Value" color "Note"
 
-chart bar "Titulo"
+chart bar "Title"
   x "Cat1" "Cat2" "Cat3"
   y 120 85 95
 
-chart line "Titulo"
-  x "Ene" "Feb" "Mar"
-  series "Serie 1" 10 20 30 green
+chart line "Title"
+  x "Jan" "Feb" "Mar"
+  series "Series 1" 10 20 30 green
 
-chart pie "Titulo"
-  "Segmento A" 35 green
-  "Segmento B" 25 blue
+chart pie "Title"
+  "Segment A" 35 green
+  "Segment B" 25 blue
 
-table "Titulo"
+table "Title"
   cols Col1 Col2 Col3
   row "val1" "val2" "val3"
 
 cards N
-  card "Titulo" "Subtitulo" "Valor"
+  card "Title" "Subtitle" "Value"
 
-list "Titulo"
+list "Title"
   - "Item 1"
   - "Item 2"
 
 code javascript
   console.log("hello");
 
-collapse "Titulo expandible"
-  Contenido oculto.
+collapse "Expandable title"
+  Hidden content.
 ```
 
-## Reglas
+## Rules
 
-- Primera linea: `UIDL/1`
-- Strings con espacios entre comillas dobles
-- Colores: nombres CSS (`red`, `green`, `blue`, `cyan`) o hex (`#ff6b6b`)
-- Sub-items indentados 2 espacios
-- Lineas vacias separan bloques
-- Comentarios: `// texto`
+- First line: `UIDL/1`
+- Strings with spaces in double quotes
+- Colors: CSS names (`red`, `green`, `blue`, `cyan`) or hex (`#ff6b6b`)
+- Sub-items indented 2 spaces
+- Empty lines separate blocks
+- Comments: `// text`
 
-## Renderizar
+## Render
 
 ```bash
-node generate.js mi-spec.uidl output/mi-pagina.html
+node tools/generate.js my-spec.uidl output/my-page.html
 ```
 
-## Ejemplo completo
+## Full example
 
 ```
 UIDL/1
 theme dark
 
-h1 "Bienvenido, Pepito"
-text "Tu plan de formacion esta listo." dim
+h1 "API Health Dashboard"
+text "Real-time monitoring — Last 24 hours" dim
 
 metrics 4
-  "Progreso" "0%" orange "Empezando"
-  "Modulos" "4" blue "Plan inicial"
-  "Tiempo" "12h" cyan "A tu ritmo"
-  "Certs" "0/2" purple "Pendientes"
+  "Uptime" "99.97%" green "SLA: 99.9%"
+  "Avg Latency" "45ms" blue "P99: 210ms"
+  "Error Rate" "0.12%" green "< 0.5% target"
+  "Requests" "2.8M" cyan "24h total"
 
-h2 "Ruta de aprendizaje"
+chart line "Response Time (ms)"
+  x "00:00" "04:00" "08:00" "12:00" "16:00" "20:00"
+  series "P50" 32 28 42 55 48 38 green
+  series "P99" 120 105 180 250 195 140 red
 
-cards 2
-  card "Seguridad" "Modulo 1" "Empezar"
-  card "POS" "Modulo 2" "Bloqueado"
-
-chart pie "Plan"
-  "Seguridad" 35 green
-  "POS" 25 blue
-  "Atencion" 25 cyan
-  "Limpieza" 15 purple
+table "Recent Incidents"
+  cols Time Endpoint Status Duration
+  row "14:23" "/api/search" "504" "3m 12s"
+  row "09:15" "/api/orders" "500" "45s"
 ```
 
-40 lineas → pagina HTML completa con graficas, KPIs, y tarjetas. ~379 tokens vs ~2,855 en HTML directo.
+~30 lines, ~400 tokens. Generates a complete HTML page with Chart.js charts, responsive layout, and dark theme.

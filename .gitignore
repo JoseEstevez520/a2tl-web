@@ -2,4 +2,3 @@ node_modules/
 dist/
 output/
 *.log
-output/

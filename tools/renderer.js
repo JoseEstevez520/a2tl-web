@@ -1,5 +1,5 @@
-// renderer.ts — JSON spec → standalone HTML+CSS+JS string
-// Estilo "pale": minimalismo real. Chart.js via CDN.
+// renderer.js — JSON spec → standalone HTML+CSS+JS string
+// Minimal styling with Chart.js via CDN.
 const CHART_COLORS = [
     '#4f46e5', '#0891b2', '#059669', '#d97706', '#dc2626',
     '#7c3aed', '#db2777', '#0d9488', '#ca8a04', '#6366f1'
@@ -206,7 +206,7 @@ export function renderHTML(spec) {
     const body = spec.sections.map((s, i) => renderSection(s, i)).join('\n    ');
     const charts = generateChartJS(spec);
     return `<!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -218,7 +218,7 @@ export function renderHTML(spec) {
 </head>
 <body>
     ${body}
-    <div class="footer"><span>Generado con UIDL Renderer</span><span>${new Date().toISOString().slice(0, 10)}</span></div>
+    <div class="footer"><span>Generated with UIDL Renderer</span><span>${new Date().toISOString().slice(0, 10)}</span></div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
       Chart.defaults.font.family = "'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif";
