@@ -20,7 +20,7 @@ import { renderHTML } from './renderer.js';
 // ── Config ────────────────────────────────────────────────────────────
 
 const OUTPUT_DIR = resolve(join(import.meta.dirname, '..', 'output'));
-const EXAMPLES_DIR = resolve(join(import.meta.dirname, '..', '..', 'ui-renderer', 'examples'));
+const EXAMPLES_DIR = resolve(join(import.meta.dirname, '..', '..', 'generative-ui-proto', 'uidl'));
 
 if (!existsSync(OUTPUT_DIR)) mkdirSync(OUTPUT_DIR, { recursive: true });
 

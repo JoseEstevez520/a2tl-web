@@ -1,0 +1,11 @@
+{
+  "name": "uidl",
+  "version": "1.1.0",
+  "type": "module",
+  "description": "Compact DSL for generating standalone HTML pages. 4x fewer tokens than raw HTML.",
+  "main": "parser.js",
+  "bin": {
+    "uidl": "generate.js"
+  },
+  "license": "MIT"
+}

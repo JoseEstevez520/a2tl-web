@@ -1,10 +1,10 @@
 <p align="center">
   <h1 align="center">uidl</h1>
   <p align="center">
-    <strong>Formato compacto para que una IA genere paginas web gastando 76% menos tokens</strong>
+    <strong>Formato compacto para que una IA genere paginas web gastando 4x menos tokens</strong>
   </p>
   <p align="center">
-    <img src="https://img.shields.io/badge/tokens-76%25_ahorro-orange?style=flat-square" alt="Token savings">
+    <img src="https://img.shields.io/badge/tokens-85%25_ahorro-orange?style=flat-square" alt="Token savings">
     <img src="https://img.shields.io/badge/MCP-compatible-blue?style=flat-square" alt="MCP">
     <img src="https://img.shields.io/badge/dependencias-0-brightgreen?style=flat-square" alt="Zero deps">
     <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
@@ -17,10 +17,10 @@
 
 ## El problema
 
-Cuando una IA genera una pagina con graficos, produce ~1500 tokens de HTML+CSS+JS. El 80% es boilerplate. UIDL comprime la misma pagina en ~360 tokens y un renderer local genera el HTML.
+Cuando una IA genera una pagina con graficos, produce miles de tokens de HTML+CSS+JS. El 80% es boilerplate. UIDL comprime la misma pagina en ~450 tokens y un renderer local genera el HTML al instante.
 
 ```
-IA genera UIDL (~360 tok)  →  Renderer local  →  HTML standalone (doble click)
+IA genera UIDL (~450 tok)  →  Renderer local (ms)  →  HTML standalone
 ```
 
 ## Ejemplo
@@ -45,7 +45,7 @@ table "Detalle"
   row Bob 82 B
 ```
 
-Eso son ~80 tokens. Genera un `.html` con Chart.js, responsive, tema dark, listo para abrir.
+~80 tokens. Genera un `.html` con Chart.js, responsive, dark theme, listo para abrir.
 
 ## Uso
 
@@ -63,54 +63,61 @@ node generate.js examples/dashboard_anfaia.uidl output/dashboard.html
 | `metrics N` | Grid de KPIs | `"label" "valor" color "nota"` |
 | `chart bar` | Barras | `x` + `y` |
 | `chart line` | Lineas (multiserie) | `x` + `series "nombre" datos color` |
-| `chart pie` | Circular | `"segmento" valor` |
+| `chart pie` | Circular | `"segmento" valor color` |
 | `chart radar` | Radar | `axes` + `series` |
 | `chart scatter` | Dispersion | `x` + `y` |
 | `table` | Tabla | `cols` + `row` |
 | `cards N` | Grid de tarjetas | `card "titulo" "sub" "valor"` |
-| `list` | Lista bullets | lineas indentadas |
+| `list` | Lista bullets | `- "item"` |
 | `code` | Bloque codigo | `code lang` + lineas indentadas |
 | `collapse` | Plegable | contenido indentado |
 
-## Benchmark
+## Prototipos SkillNet
+
+4 escenarios reales de una plataforma de formacion corporativa, mostrando como la misma herramienta genera UIs completamente distintas segun el usuario:
+
+| Prototipo | Escenario | UIDL | HTML | Ahorro |
+|---|---|---|---|---|
+| `skillnet_pepito_nuevo` | Empleado nuevo, ruta de aprendizaje | ~379 tok | ~2,855 tok | 87% |
+| `skillnet_maria_veterana` | Gerente, dashboard de equipo | ~439 tok | ~3,103 tok | 86% |
+| `skillnet_tutor_revisa` | Vista del tutor IA, diagnostico | ~505 tok | ~3,081 tok | 84% |
+| `skillnet_crossdomain_legal` | Mismo sistema para un bufete | ~486 tok | ~3,217 tok | 85% |
+
+```bash
+node generate.js examples/skillnet_pepito_nuevo.uidl output/pepito.html
+```
+
+## Benchmark real
+
+Misma pagina (dashboard de gerente con 4 KPIs, tabla, 2 graficos, 3 cards):
 
 | Formato | Tokens | Ahorro |
 |---|---|---|
-| HTML+CSS+JS directo | ~1471 | — |
-| JSON spec | ~818 | 44% |
-| **UIDL** | **~360** | **76%** |
+| HTML+CSS+JS directo | ~1,760 | — |
+| **UIDL** | **~440** | **75%** |
 
-Dashboard con 6 metricas, 2 graficos, 1 tabla, 2 bloques de texto, 1 grid de cards.
+Medido con la misma IA generando ambos formatos para la misma pagina.
 
-## MCP Server
+## 3 formas de usar
 
-En `mcp/` hay un server MCP con el tool `render_page(spec)` — recibe UIDL, genera HTML y lo abre en el navegador.
+### 1. CLI (sin dependencias)
+
+```bash
+node generate.js input.uidl output.html
+```
+
+### 2. MCP Server (para Claude Code, Cursor, etc.)
 
 ```bash
 cd mcp && npm install && npm run build
+claude mcp add uidl -- node /ruta/a/mcp/dist/index.js
 ```
 
-Registrar en Claude Code:
+El agente usa el tool `render_page(spec)` directamente.
 
-```bash
-claude mcp add ui-renderer -- node /ruta/a/mcp/dist/index.js
-```
+### 3. Skill para agentes
 
-## Tech stack
-
-<p>
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-  <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white" alt="Chart.js">
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/MCP_SDK-1C3C3C?style=for-the-badge" alt="MCP SDK">
-</p>
-
-| Capa | Detalle |
-|---|---|
-| **Renderer** | HTML + CSS + JS vanilla. Sin React. Sin build. |
-| **Graficos** | Chart.js via CDN (bar, line, pie, radar, scatter) |
-| **Estilo** | "Pale" — minimalismo real. Sistema tipografico, spacing generoso, sin decoracion |
-| **MCP** | TypeScript + @modelcontextprotocol/sdk, tool render_page |
+Copia `SKILL.md` en tu sistema de skills/prompts. El agente aprende el formato y genera UIDL directamente, sin necesidad de MCP.
 
 ## Reglas del formato
 
@@ -122,9 +129,18 @@ claude mcp add ui-renderer -- node /ruta/a/mcp/dist/index.js
 6. Lineas vacias cierran el bloque indentado
 7. Comentarios con `//`
 
+## Tech stack
+
+| Capa | Detalle |
+|---|---|
+| **Renderer** | HTML + CSS + JS vanilla. Sin React. Sin build. |
+| **Graficos** | Chart.js via CDN |
+| **Estilo** | Dark theme por defecto, clean modern look |
+| **MCP** | TypeScript + @modelcontextprotocol/sdk |
+
 ## Origen
 
-Construido como parte de la investigacion [ANFAIA](https://anfaia.org) sobre generacion de UI eficiente en tokens para agentes IA (julio 2026). La idea: en vez de que la IA genere 2000 lineas de React, que emita 40 lineas de spec y un renderer local haga el resto.
+Construido como parte de la investigacion [ANFAIA](https://anfaia.org) sobre generacion de UI eficiente en tokens para agentes IA (julio 2026).
 
 ## Licencia
 

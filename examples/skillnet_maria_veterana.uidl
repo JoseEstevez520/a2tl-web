@@ -1,0 +1,43 @@
+UIDL/1
+theme dark
+layout stack
+
+h1 "Dashboard de Equipo — Maria Lopez"
+text "Gerente de sala | 3 locales | 24 empleados activos" dim
+
+metrics 4
+  "Compliance equipo" "87%" green "+5pp vs mes anterior"
+  "Empleados al dia" "21/24" blue "3 pendientes"
+  "Formacion completada" "156h" cyan "Ultimo mes"
+  "Riesgo compliance" "3" red "Empleados con alertas"
+
+h2 "Alertas de formacion"
+
+table "Empleados con formacion pendiente"
+  cols Empleado Modulo "Fecha limite" Estado
+  row "Carlos Ruiz" "Seguridad Alimentaria" "2026-07-10" "Vencido"
+  row "Ana Torres" "Renovacion POS" "2026-07-15" "Urgente"
+  row "Luis Gomez" "Alergenos 2026" "2026-07-20" "Pendiente"
+
+text "3 empleados tienen formacion critica pendiente. Carlos lleva 5 dias de retraso. Recomendacion: asignar sesion intensiva esta semana." highlight
+
+hr
+
+h2 "Rendimiento del equipo"
+
+chart bar "Puntuacion media por area"
+  x "Seg. Alimentaria" "POS" "At. Cliente" "Alergenos" "Limpieza"
+  y 92 88 85 78 90
+
+chart line "Evolucion compliance mensual"
+  x "Feb" "Mar" "Abr" "May" "Jun" "Jul"
+  series "Compliance %" 72 75 78 82 85 87 green
+
+h2 "Acciones recomendadas"
+
+cards 3
+  card "Asignar modulo" "Alergenos 2026 para todo el equipo" "Nuevo modulo disponible"
+  card "Sesion grupal" "Repaso seguridad alimentaria" "3 empleados necesitan refuerzo"
+  card "Certificacion" "Renovar POS para Ana Torres" "Vence en 8 dias"
+
+text "El equipo mejoro un 5% en compliance este mes. El area mas debil es Alergenos — el nuevo modulo de 2026 cubre los cambios normativos recientes." insight

@@ -1,0 +1,40 @@
+UIDL/1
+theme dark
+layout stack
+
+h1 "Bienvenido a SkillNet, Pepito"
+text "Tu plan de formacion personalizado esta listo. Empecemos paso a paso." dim
+
+metrics 4
+  "Progreso general" "0%" orange "Recien empezando"
+  "Modulos asignados" "4" blue "Plan inicial"
+  "Tiempo estimado" "12h" cyan "A tu ritmo"
+  "Certificaciones" "0/2" purple "Seguridad + POS"
+
+h2 "Tu ruta de aprendizaje"
+
+cards 2
+  card "Seguridad Alimentaria" "Obligatorio — Modulo 1" "Empezar ahora"
+  card "Sistema POS" "Obligatorio — Modulo 2" "Bloqueado"
+  card "Atencion al Cliente" "Recomendado — Modulo 3" "Bloqueado"
+  card "Protocolo de Limpieza" "Recomendado — Modulo 4" "Bloqueado"
+
+h2 "Proxima leccion"
+
+text "Modulo 1: Seguridad Alimentaria — Capitulo 1: Temperaturas criticas. Duracion estimada: 20 minutos." highlight
+
+list "Que aprenderas hoy"
+  - "Rangos de temperatura seguros para cada tipo de alimento"
+  - "Como usar el termometro de cocina correctamente"
+  - "Registro obligatorio de temperaturas por turno"
+  - "Que hacer si detectas un alimento fuera de rango"
+
+hr
+
+chart pie "Tu plan de formacion"
+  "Seg. Alimentaria" 35 green
+  "Sistema POS" 25 blue
+  "At. Cliente" 25 cyan
+  "Limpieza" 15 purple
+
+text "Tu tutor IA te acompanara en cada leccion. Puedes preguntar dudas en cualquier momento y el contenido se adaptara a tu ritmo." insight
