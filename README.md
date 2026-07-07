@@ -78,7 +78,7 @@ table "Details"
 ## Usage
 
 ```bash
-node generate.js examples/dashboard_anfaia.uidl output/dashboard.html
+node tools/generate.js examples/dashboard_anfaia.uidl output/dashboard.html
 ```
 
 ## Components
@@ -112,7 +112,7 @@ node generate.js examples/dashboard_anfaia.uidl output/dashboard.html
 | `skillnet_crossdomain_legal` | Same platform for a law firm | ~486 tok | ~3,217 tok | 85% |
 
 ```bash
-node generate.js examples/skillnet_pepito_nuevo.uidl output/pepito.html
+node tools/generate.js examples/skillnet_pepito_nuevo.uidl output/pepito.html
 ```
 
 ## 3 ways to use
@@ -120,21 +120,44 @@ node generate.js examples/skillnet_pepito_nuevo.uidl output/pepito.html
 ### 1. CLI (zero dependencies)
 
 ```bash
-node generate.js input.uidl output.html
+node tools/generate.js input.uidl output.html
 ```
 
 ### 2. MCP Server (for Claude Code, Cursor, etc.)
 
 ```bash
-cd mcp && npm install && npm run build
-claude mcp add uidl -- node /path/to/mcp/dist/index.js
+cd tools/mcp && npm install && npm run build
+claude mcp add uidl -- node /path/to/uidl/tools/mcp/dist/index.js
 ```
 
 The agent calls the `render_page(spec)` tool directly.
 
 ### 3. Agent skill
 
-Copy `SKILL.md` into your skill/prompt system. The agent learns the format and generates UIDL natively — no MCP needed.
+Copy `skill/uidl.md` into your skill/prompt system. The agent learns the format and generates UIDL natively — no MCP needed.
+
+## Repo structure
+
+```
+uidl/
+├── skill/
+│   └── uidl.md              # Agent skill — copy this to teach any AI the format
+├── tools/
+│   ├── parser.js             # UIDL text → JSON
+│   ├── renderer.js           # JSON → standalone HTML
+│   ├── generate.js           # CLI entry point
+│   └── mcp/                  # MCP server (TypeScript)
+│       └── src/
+├── examples/                 # Example .uidl specs
+│   ├── dashboard_anfaia.uidl
+│   ├── skillnet_pepito_nuevo.uidl
+│   ├── skillnet_maria_veterana.uidl
+│   ├── skillnet_tutor_revisa.uidl
+│   └── skillnet_crossdomain_legal.uidl
+└── README.md
+```
+
+**`skill/`** teaches the agent the format. **`tools/`** processes the format. Pick one or both.
 
 ## Format rules
 
