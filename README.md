@@ -143,8 +143,8 @@ uidl/
 ├── skill/
 │   └── uidl.md              # Agent skill — copy this to teach any AI the format
 ├── tools/
-│   ├── parser.js             # UIDL text → JSON
-│   ├── renderer.js           # JSON → standalone HTML
+│   ├── parser.js             # UIDL text → internal spec
+│   ├── renderer.js           # Spec → standalone HTML
 │   ├── generate.js           # CLI entry point
 │   └── mcp/                  # MCP server (TypeScript)
 │       └── src/
