@@ -1,10 +1,10 @@
 <p align="center">
   <h1 align="center">uidl</h1>
   <p align="center">
-    <strong>Compact DSL for AI-generated web pages. 4x fewer tokens than raw HTML.</strong>
+    <strong>Compact DSL for AI-generated web pages. 11% fewer tokens than Markdown, 89% fewer than HTML.</strong>
   </p>
   <p align="center">
-    <img src="https://img.shields.io/badge/tokens-75%25_savings-orange?style=flat-square" alt="Token savings">
+    <img src="https://img.shields.io/badge/tokens-89%25_vs_HTML-orange?style=flat-square" alt="Token savings">
     <img src="https://img.shields.io/badge/MCP-compatible-blue?style=flat-square" alt="MCP">
     <img src="https://img.shields.io/badge/dependencies-0-brightgreen?style=flat-square" alt="Zero deps">
     <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
@@ -16,18 +16,18 @@
 The AI writes **what** to show. The renderer handles **how**. Zero tokens wasted on CSS, HTML boilerplate, or JS.
 
 ```
-AI generates UIDL (~350 tok)  →  Local renderer (ms)  →  Standalone HTML page
+AI generates UIDL (~343 tok)  →  Local renderer (ms)  →  Standalone HTML page
 ```
 
-### Same data, three formats, measured
+### Same data, three formats, measured (average across 5 examples)
 
 |            | Markdown | UIDL   | Raw HTML |
 |------------|----------|--------|----------|
-| Bytes      | 917      | 1,037  | 10,374   |
-| Tokens (~) | ~262     | ~296   | ~2,963   |
+| Bytes      | 1,349    | 1,199  | 10,688   |
+| Tokens (~) | ~385     | ~343   | ~3,054   |
 | Output     | Plain text | Styled page with charts | Styled page with charts |
 
-UIDL costs **13% more tokens than Markdown** but produces a full interactive page with Chart.js charts, metric cards, and responsive styling. Same data, same LLM.
+UIDL uses **11% fewer tokens than Markdown** and produces a full interactive page with Chart.js charts, metric cards, and responsive styling. Same data, same LLM. See [`bench/RESULTS.md`](bench/RESULTS.md) for the full breakdown.
 
 ## Why this matters
 
