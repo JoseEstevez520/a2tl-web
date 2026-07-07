@@ -1,0 +1,174 @@
+UIDL/1
+theme light
+
+h1 "Weekly Team Sync — Sprint 14"
+
+h2 "Attendees"
+
+list "Team"
+  - "Maria (PM)"
+  - "Carlos (Backend Lead)"
+  - "Ana (Frontend)"
+  - "Pedro (DevOps)"
+  - "Laura (QA)"
+
+h2 "Agenda"
+
+list "Topics"
+  - "Sprint review"
+  - "Blockers discussion"
+  - "Next sprint planning"
+  - "Hiring update"
+
+h2 "Sprint 14 Review"
+
+text "Completed" highlight
+
+list "Done"
+  - "User authentication refactor"
+  - "Database migration to PostgreSQL 16"
+  - "Landing page redesign"
+  - "API rate limiting middleware"
+  - "Logging pipeline upgrade"
+  - "Mobile push notification service"
+  - "CSV export for admin dashboard"
+  - "Password reset flow bugfix"
+
+text "In Progress" highlight
+
+list "Payment gateway integration"
+  - "Stripe webhook handler done"
+  - "PayPal adapter pending"
+  - "Invoice PDF generation started"
+
+list "Search microservice"
+  - "Elasticsearch cluster configured"
+  - "Indexing pipeline at 60%"
+  - "Query API not started"
+
+list "Admin role permissions"
+  - "Role model defined"
+  - "UI for role assignment in review"
+  - "Audit log integration pending"
+
+text "Blocked" highlight
+
+list "Blockers"
+  - "iOS certificate renewal — waiting on Apple"
+  - "CDN migration — vendor contract not signed"
+  - "SSO integration — identity provider docs outdated"
+
+h2 "Action Items"
+
+list "Tasks"
+  - "Maria: schedule design review for mobile screens by Friday"
+  - "Carlos: write RFC for event-driven architecture proposal"
+  - "Ana: fix responsive layout bugs on Safari"
+  - "Pedro: set up staging environment for payment testing"
+  - "Laura: create regression test suite for auth module"
+  - "Maria: send updated roadmap to stakeholders"
+  - "Carlos: review PR #347 and PR #352 by Wednesday"
+  - "Ana: prototype dark mode toggle component"
+  - "Pedro: configure alerting for new database cluster"
+  - "Laura: document edge cases for CSV export"
+
+h2 "Blockers Discussion"
+
+text "iOS Certificate" highlight
+
+list "iOS Certificate Details"
+  - "Submitted renewal request on June 28"
+  - "Apple support ticket #4821093"
+  - "Estimated resolution: 5-7 business days"
+  - "Workaround: use TestFlight for internal builds"
+
+text "CDN Migration" highlight
+
+list "Vendors Evaluated"
+  - "CloudFront — best pricing, complex setup"
+  - "Fastly — best DX, higher cost"
+  - "Cloudflare — balanced, limited custom rules"
+
+list "CDN Status"
+  - "Decision needed from VP Engineering"
+  - "Blocking 3 frontend performance tickets"
+
+text "SSO Integration" highlight
+
+list "SSO Issues"
+  - "Okta docs last updated 2024"
+  - "Missing SCIM provisioning endpoints"
+  - "Alternative: use Auth0 as middleware"
+  - "Need POC by end of next sprint"
+
+h2 "Next Sprint Planning"
+
+text "Must Have" highlight
+
+list "Priority 1"
+  - "Complete payment gateway integration"
+  - "Fix 5 critical bugs from QA backlog"
+  - "Deploy search service to staging"
+  - "Update API documentation"
+
+text "Should Have" highlight
+
+list "Priority 2"
+  - "Dark mode support"
+  - "Performance audit for dashboard"
+  - "Add monitoring dashboards to Grafana"
+
+text "Nice to Have" highlight
+
+list "Priority 3"
+  - "Animated onboarding flow"
+  - "Keyboard shortcuts for power users"
+  - "Bulk operations in admin panel"
+
+h2 "Hiring Update"
+
+list "Backend engineer — 3 candidates in pipeline"
+  - "Phone screen scheduled: July 9"
+  - "Take-home sent: 2 candidates"
+  - "Offer stage: 0"
+
+list "Frontend engineer — position posted"
+  - "Applications received: 47"
+  - "Screening: in progress"
+  - "Interviews: not started"
+
+list "QA engineer"
+  - "On hold pending budget approval"
+
+h2 "Recurring Issues"
+
+list "Flaky CI tests"
+  - "3 tests randomly failing on Node 20"
+  - "Docker image caching inconsistent"
+  - "GitHub Actions runner timeouts"
+
+list "Slow code review turnaround"
+  - "Average time to first review: 2.3 days"
+  - "Target: under 1 day"
+  - "Proposal: daily review slot 10-11am"
+
+list "Documentation gaps"
+  - "API docs missing 12 endpoints"
+  - "No onboarding guide for new devs"
+  - "Architecture decision records not maintained"
+
+h2 "Decisions Made"
+
+list "Agreed"
+  - "Adopt Fastly as CDN provider"
+  - "Move to biweekly releases starting Sprint 16"
+  - "Require PR approval from 2 reviewers"
+  - "Sunset legacy API v1 by September 30"
+  - "Add TypeScript strict mode to all new modules"
+
+h2 "Next Meeting"
+
+list "Details"
+  - "Date: July 14, 2026"
+  - "Time: 10:00 AM CET"
+  - "Location: Room 3B / Zoom link in calendar"

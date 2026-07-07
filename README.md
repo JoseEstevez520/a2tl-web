@@ -1,10 +1,10 @@
 <p align="center">
   <h1 align="center">uidl</h1>
   <p align="center">
-    <strong>Compact DSL for AI-generated web pages. 11% fewer tokens than Markdown, 89% fewer than HTML.</strong>
+    <strong>Compact DSL for AI-generated web pages. Costs the same as Markdown, but produces interactive pages.</strong>
   </p>
   <p align="center">
-    <img src="https://img.shields.io/badge/tokens-89%25_vs_HTML-orange?style=flat-square" alt="Token savings">
+    <img src="https://img.shields.io/badge/89%25_fewer_tokens_than_HTML-orange?style=flat-square" alt="Token savings">
     <img src="https://img.shields.io/badge/MCP-compatible-blue?style=flat-square" alt="MCP">
     <img src="https://img.shields.io/badge/dependencies-0-brightgreen?style=flat-square" alt="Zero deps">
     <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
@@ -13,27 +13,46 @@
 
 ---
 
-The AI writes **what** to show. The renderer handles **how**. Zero tokens wasted on CSS, HTML boilerplate, or JS.
+The AI writes **what** to show. The renderer handles **how**. Zero tokens on CSS, HTML, or JS.
 
 ```
 AI generates UIDL (~343 tok)  →  Local renderer (ms)  →  Standalone HTML page
 ```
 
-### Same data, three formats, measured (average across 5 examples)
+### The tradeoff
 
 |            | Markdown | UIDL   | Raw HTML |
 |------------|----------|--------|----------|
-| Bytes      | 1,349    | 1,199  | 10,688   |
-| Tokens (~) | ~385     | ~343   | ~3,054   |
-| Output     | Plain text | Styled page with charts | Styled page with charts |
+| Tokens (~) | ~343     | ~343   | ~3,054   |
+| Output     | Plain text | Interactive page with charts | Interactive page with charts |
 
-UIDL uses **11% fewer tokens than Markdown** and produces a full interactive page with Chart.js charts, metric cards, and responsive styling. Same data, same LLM. See [`bench/RESULTS.md`](bench/RESULTS.md) for the full breakdown.
+UIDL and Markdown cost roughly the same tokens. But Markdown gives you plain text. UIDL gives you a styled page with Chart.js charts, metric cards, tables, and responsive layout.
+
+vs HTML, UIDL saves ~89% of tokens for the same visual result.
+
+### Honest benchmark: UIDL vs Markdown vs HTML
+
+We ran 11 adversarial tests covering different content types. Same data in each format, measured in bytes:
+
+| Content type | MD bytes | UIDL bytes | UIDL vs MD | UIDL vs HTML |
+|---|---|---|---|---|
+| Dashboards (5 examples avg) | 1,349 | 1,199 | **-11%** | -89% |
+| Small tables (6 tables, 2-3 rows) | 708 | 629 | **-11%** | -94% |
+| Mixed real-world (weekly update) | 2,240 | 2,279 | +2% | -89% |
+| Text-heavy (quarterly review) | 14,782 | 15,064 | +2% | -89% |
+| Code-heavy (API docs) | 6,038 | 6,414 | +6% | -88% |
+| Minimal (title + 2 paragraphs) | 553 | 629 | +14% | -88% |
+| Lists-heavy (meeting notes) | 3,721 | 4,412 | +19% | -85% |
+
+**UIDL wins** on structured data (dashboards, tables, metrics). **Markdown wins** on prose, lists, and code. For mixed content they're roughly the same size. Against HTML, UIDL saves ~89% regardless of content type.
+
+The key difference isn't size — it's output. Markdown produces plain text. UIDL produces an interactive page with charts. For roughly the same token cost.
+
+Full test data in [`bench/`](bench/) and [`adversarial/`](adversarial/).
 
 ## Why this matters
 
-LLMs already generate dashboards, reports, and data pages. The bottleneck is cost and speed — every page costs thousands of tokens in HTML/CSS/JS boilerplate. At scale, that's slow and expensive.
-
-UIDL separates content from presentation. The AI emits a compact spec. A local renderer expands it to full HTML with Chart.js charts, responsive tables, and styled components. The spec is small enough to stream in real time, and the renderer is deterministic.
+When an LLM generates a web page, it spends thousands of tokens on HTML/CSS/JS boilerplate. UIDL skips all of that. The AI emits a compact spec, and a local renderer expands it to full HTML instantly. Same generation cost as asking for Markdown, but you get an interactive page instead of plain text.
 
 ## Quick start
 

@@ -1,0 +1,43 @@
+UIDL/1
+
+h1 "Quick Reference Card"
+
+h2 "HTTP Status Codes"
+table
+  cols Code Meaning
+  row "200" "OK"
+  row "404" "Not Found"
+  row "500" "Server Error"
+
+h2 "Git Shortcuts"
+table
+  cols Alias Command
+  row "gs" "git status"
+  row "gc" "git commit"
+
+h2 "Ports"
+table
+  cols Service Port
+  row "HTTP" "80"
+  row "HTTPS" "443"
+  row "SSH" "22"
+
+h2 "File Sizes"
+table
+  cols Unit Bytes
+  row "KB" "1024"
+  row "MB" "1048576"
+
+h2 "DNS Record Types"
+table
+  cols Type Use
+  row "A" "IPv4"
+  row "AAAA" "IPv6"
+  row "CNAME" "Alias"
+
+h2 "Exit Codes"
+table
+  cols Code Meaning
+  row "0" "Success"
+  row "1" "Error"
+  row "127" "Not Found"

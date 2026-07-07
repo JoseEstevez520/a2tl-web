@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Team Sync — Sprint 14</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --bg-card: #ffffff;
+      --bg-hover: #f5f5f5;
+      --text: #1a1a1a;
+      --text-dim: #737373;
+      --border: #e5e5e5;
+      --accent: #4f46e5;
+      --accent-glow: rgba(79,70,229,0.08);
+      --highlight-bg: #eef2ff;
+      --highlight-border: #c7d2fe;
+      --code-bg: #f4f4f5;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; padding: 2.5rem 1.5rem;
+      max-width: 1040px; margin: 0 auto;
+    }
+    h1 { font-size: 1.85rem; font-weight: 700; margin: 0 0 0.25rem; letter-spacing: -0.03em; background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    h2 { font-size: 1.15rem; font-weight: 600; margin: 2.25rem 0 0.75rem; letter-spacing: -0.01em; color: var(--text); position: relative; padding-left: 0.75rem; }
+    h2::before { content: ''; position: absolute; left: 0; top: 0.2em; bottom: 0.2em; width: 3px; background: var(--accent); border-radius: 2px; }
+    h3 { font-size: 1.0rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: var(--text-dim); }
+    p, .text-block { margin: 0.75rem 0; color: var(--text-dim); font-size: 0.925rem; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .metrics { display: grid; gap: 0.875rem; margin: 1.25rem 0; }
+    .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.15rem 1.35rem; transition: all 0.2s ease; position: relative; overflow: hidden; }
+    .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); opacity: 0; transition: opacity 0.2s; }
+    .metric-card:hover { background: var(--bg-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .metric-card:hover::before { opacity: 1; }
+    .metric-label { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+    .metric-value { font-size: 1.6rem; font-weight: 700; margin: 0.3rem 0 0.15rem; letter-spacing: -0.02em; }
+    .metric-note { font-size: 0.72rem; color: var(--text-dim); opacity: 0.8; }
+    .chart-wrap { margin: 1.5rem 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+    .chart-wrap h3 { margin: 0 0 0.75rem; color: var(--text); font-size: 0.95rem; }
+    .chart-wrap canvas { max-height: 300px; }
+    .table-wrap { margin: 1.5rem 0; overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.25rem 0; }
+    .table-wrap h3 { padding: 0.75rem 1rem 0.5rem; margin: 0; color: var(--text); font-size: 0.95rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    thead th { text-align: left; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dim); }
+    tbody td { padding: 0.6rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.04); }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--bg-hover); }
+    .cards { display: grid; gap: 0.875rem; margin: 1.25rem 0; }
+    .info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.15rem 1.35rem; transition: all 0.2s ease; }
+    .info-card:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow), 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-1px); }
+    .info-card-title { font-weight: 600; font-size: 0.9rem; }
+    .info-card-sub { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.2rem; }
+    .info-card-value { font-size: 0.82rem; color: var(--accent); margin-top: 0.35rem; font-weight: 600; letter-spacing: 0.01em; }
+    .text-highlight { background: var(--highlight-bg); border-left: 3px solid var(--highlight-border); padding: 0.85rem 1.15rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; color: var(--text); font-size: 0.9rem; }
+    .text-insight { background: linear-gradient(135deg, var(--highlight-bg) 0%, rgba(79,70,229,0.04) 100%); border-left: 3px solid var(--accent); padding: 0.85rem 1.15rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; font-size: 0.9rem; }
+    .text-dim { color: var(--text-dim); }
+    .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.15rem; overflow-x: auto; font-family: 'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace; font-size: 0.8rem; line-height: 1.55; margin: 1rem 0; white-space: pre; }
+    .list-block { margin: 1rem 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; }
+    .list-block h3 { margin: 0 0 0.5rem; color: var(--text); font-size: 0.95rem; }
+    .list-block ul { padding-left: 1.25rem; }
+    .list-block li { margin: 0.35rem 0; color: var(--text-dim); font-size: 0.875rem; }
+    .list-block li::marker { color: var(--accent); }
+    details { margin: 1rem 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    details summary { padding: 0.75rem 1rem; cursor: pointer; font-weight: 500; background: var(--bg-card); }
+    details[open] summary { border-bottom: 1px solid var(--border); }
+    details .collapse-body { padding: 1rem; }
+    .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.7rem; color: var(--text-dim); opacity: 0.6; display: flex; justify-content: space-between; }
+    @media (max-width: 640px) {
+      body { padding: 1.25rem 1rem; }
+      h1 { font-size: 1.5rem; }
+      .metric-value { font-size: 1.3rem; }
+      .metrics, .cards { grid-template-columns: 1fr !important; }
+    }</style>
+</head>
+<body>
+    <h1>Weekly Team Sync — Sprint 14</h1>
+    <h2>Attendees</h2>
+    <div class="list-block"><h3>Team</h3><ul><li>Maria (PM)</li><li>Carlos (Backend Lead)</li><li>Ana (Frontend)</li><li>Pedro (DevOps)</li><li>Laura (QA)</li></ul></div>
+    <h2>Agenda</h2>
+    <div class="list-block"><h3>Topics</h3><ul><li>Sprint review</li><li>Blockers discussion</li><li>Next sprint planning</li><li>Hiring update</li></ul></div>
+    <h2>Sprint 14 Review</h2>
+    <div class="text-highlight">Completed</div>
+    <div class="list-block"><h3>Done</h3><ul><li>User authentication refactor</li><li>Database migration to PostgreSQL 16</li><li>Landing page redesign</li><li>API rate limiting middleware</li><li>Logging pipeline upgrade</li><li>Mobile push notification service</li><li>CSV export for admin dashboard</li><li>Password reset flow bugfix</li></ul></div>
+    <div class="text-highlight">In Progress</div>
+    <div class="list-block"><h3>Payment gateway integration</h3><ul><li>Stripe webhook handler done</li><li>PayPal adapter pending</li><li>Invoice PDF generation started</li></ul></div>
+    <div class="list-block"><h3>Search microservice</h3><ul><li>Elasticsearch cluster configured</li><li>Indexing pipeline at 60%</li><li>Query API not started</li></ul></div>
+    <div class="list-block"><h3>Admin role permissions</h3><ul><li>Role model defined</li><li>UI for role assignment in review</li><li>Audit log integration pending</li></ul></div>
+    <div class="text-highlight">Blocked</div>
+    <div class="list-block"><h3>Blockers</h3><ul><li>iOS certificate renewal — waiting on Apple</li><li>CDN migration — vendor contract not signed</li><li>SSO integration — identity provider docs outdated</li></ul></div>
+    <h2>Action Items</h2>
+    <div class="list-block"><h3>Tasks</h3><ul><li>Maria: schedule design review for mobile screens by Friday</li><li>Carlos: write RFC for event-driven architecture proposal</li><li>Ana: fix responsive layout bugs on Safari</li><li>Pedro: set up staging environment for payment testing</li><li>Laura: create regression test suite for auth module</li><li>Maria: send updated roadmap to stakeholders</li><li>Carlos: review PR #347 and PR #352 by Wednesday</li><li>Ana: prototype dark mode toggle component</li><li>Pedro: configure alerting for new database cluster</li><li>Laura: document edge cases for CSV export</li></ul></div>
+    <h2>Blockers Discussion</h2>
+    <div class="text-highlight">iOS Certificate</div>
+    <div class="list-block"><h3>iOS Certificate Details</h3><ul><li>Submitted renewal request on June 28</li><li>Apple support ticket #4821093</li><li>Estimated resolution: 5-7 business days</li><li>Workaround: use TestFlight for internal builds</li></ul></div>
+    <div class="text-highlight">CDN Migration</div>
+    <div class="list-block"><h3>Vendors Evaluated</h3><ul><li>CloudFront — best pricing, complex setup</li><li>Fastly — best DX, higher cost</li><li>Cloudflare — balanced, limited custom rules</li></ul></div>
+    <div class="list-block"><h3>CDN Status</h3><ul><li>Decision needed from VP Engineering</li><li>Blocking 3 frontend performance tickets</li></ul></div>
+    <div class="text-highlight">SSO Integration</div>
+    <div class="list-block"><h3>SSO Issues</h3><ul><li>Okta docs last updated 2024</li><li>Missing SCIM provisioning endpoints</li><li>Alternative: use Auth0 as middleware</li><li>Need POC by end of next sprint</li></ul></div>
+    <h2>Next Sprint Planning</h2>
+    <div class="text-highlight">Must Have</div>
+    <div class="list-block"><h3>Priority 1</h3><ul><li>Complete payment gateway integration</li><li>Fix 5 critical bugs from QA backlog</li><li>Deploy search service to staging</li><li>Update API documentation</li></ul></div>
+    <div class="text-highlight">Should Have</div>
+    <div class="list-block"><h3>Priority 2</h3><ul><li>Dark mode support</li><li>Performance audit for dashboard</li><li>Add monitoring dashboards to Grafana</li></ul></div>
+    <div class="text-highlight">Nice to Have</div>
+    <div class="list-block"><h3>Priority 3</h3><ul><li>Animated onboarding flow</li><li>Keyboard shortcuts for power users</li><li>Bulk operations in admin panel</li></ul></div>
+    <h2>Hiring Update</h2>
+    <div class="list-block"><h3>Backend engineer — 3 candidates in pipeline</h3><ul><li>Phone screen scheduled: July 9</li><li>Take-home sent: 2 candidates</li><li>Offer stage: 0</li></ul></div>
+    <div class="list-block"><h3>Frontend engineer — position posted</h3><ul><li>Applications received: 47</li><li>Screening: in progress</li><li>Interviews: not started</li></ul></div>
+    <div class="list-block"><h3>QA engineer</h3><ul><li>On hold pending budget approval</li></ul></div>
+    <h2>Recurring Issues</h2>
+    <div class="list-block"><h3>Flaky CI tests</h3><ul><li>3 tests randomly failing on Node 20</li><li>Docker image caching inconsistent</li><li>GitHub Actions runner timeouts</li></ul></div>
+    <div class="list-block"><h3>Slow code review turnaround</h3><ul><li>Average time to first review: 2.3 days</li><li>Target: under 1 day</li><li>Proposal: daily review slot 10-11am</li></ul></div>
+    <div class="list-block"><h3>Documentation gaps</h3><ul><li>API docs missing 12 endpoints</li><li>No onboarding guide for new devs</li><li>Architecture decision records not maintained</li></ul></div>
+    <h2>Decisions Made</h2>
+    <div class="list-block"><h3>Agreed</h3><ul><li>Adopt Fastly as CDN provider</li><li>Move to biweekly releases starting Sprint 16</li><li>Require PR approval from 2 reviewers</li><li>Sunset legacy API v1 by September 30</li><li>Add TypeScript strict mode to all new modules</li></ul></div>
+    <h2>Next Meeting</h2>
+    <div class="list-block"><h3>Details</h3><ul><li>Date: July 14, 2026</li><li>Time: 10:00 AM CET</li><li>Location: Room 3B / Zoom link in calendar</li></ul></div>
+    <div class="footer"><span>Generated with UIDL Renderer</span><span>2026-07-07</span></div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      Chart.defaults.font.family = "'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif";
+      Chart.defaults.font.size = 12;
+      
+    });
+    </script>
+</body>
+</html>
