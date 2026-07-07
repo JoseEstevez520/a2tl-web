@@ -19,15 +19,15 @@ The AI writes **what** to show. The renderer handles **how**. Zero tokens wasted
 AI generates UIDL (~350 tok)  →  Local renderer (ms)  →  Standalone HTML page
 ```
 
-### Same page, measured
+### Same data, three formats, measured
 
-|            | Raw HTML | UIDL   |
-|------------|----------|--------|
-| Bytes      | 10,370   | 1,035  |
-| Tokens (~) | ~2,963   | ~296   |
-| Ratio      | 100%     | 10%    |
+|            | Markdown | UIDL   | Raw HTML |
+|------------|----------|--------|----------|
+| Bytes      | 917      | 1,037  | 10,374   |
+| Tokens (~) | ~262     | ~296   | ~2,963   |
+| Output     | Plain text | Styled page with charts | Styled page with charts |
 
-Same dashboard, same charts, same data. Same LLM generating both.
+UIDL costs **13% more tokens than Markdown** but produces a full interactive page with Chart.js charts, metric cards, and responsive styling. Same data, same LLM.
 
 ## Why this matters
 
