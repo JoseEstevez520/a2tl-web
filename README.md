@@ -192,6 +192,16 @@ That's it. The renderer swaps colors, font, and footer. No build step, no depend
 
 <br>
 
+<h2>Extending: custom components</h2>
+
+UIDL ships with 10 components. If you need more, add your own -- it's ~15 lines of code.
+
+See [docs/extending.md](docs/extending.md) for a step-by-step guide.
+
+The format stays compact. The renderer is where customization lives.
+
+<br>
+
 <h2>3 ways to use</h2>
 
 **CLI** — generate HTML from a spec:

@@ -95,3 +95,9 @@ table "Recent Incidents"
 ```
 
 ~30 lines, ~400 tokens. Generates a complete HTML page with Chart.js charts, responsive layout, and dark theme.
+
+## Extending the renderer
+
+The renderer is extensible. You can add custom components by adding a type to the `Section` union in `parser.ts`, a parse block in `parseUIDL()`, and a render case in `renderSection()`. Each new component is ~15 lines of code across two files.
+
+See [docs/extending.md](docs/extending.md) for a step-by-step guide with a worked example.
