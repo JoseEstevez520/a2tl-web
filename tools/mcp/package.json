@@ -1,6 +1,6 @@
 {
   "name": "mcp-ui-renderer",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "MCP server: render_page tool — UIDL spec → standalone HTML page",
   "type": "module",
   "main": "dist/index.js",

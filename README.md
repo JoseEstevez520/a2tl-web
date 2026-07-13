@@ -146,6 +146,52 @@ chart pie "Traffic Sources"
 
 <br>
 
+<h2>Brand / Theming</h2>
+
+UIDL specs look the same regardless of who uses them. Branding lives in a JSON preset that the renderer applies — the LLM never generates CSS.
+
+Add `brand <name>` to your spec header:
+
+```
+UIDL/1
+theme dark
+brand skillnet
+
+h1 "Training Dashboard"
+```
+
+Create a theme file in `tools/mcp/themes/`:
+
+```json
+{
+  "name": "skillnet",
+  "base": "dark",
+  "colors": {
+    "accent": "#6366f1",
+    "accent-2": "#22d3ee",
+    "success": "#10b981"
+  },
+  "font": "Plus Jakarta Sans",
+  "radius": "10px",
+  "footer": "Generado con SkillNet"
+}
+```
+
+That's it. The renderer swaps colors, font, and footer. No build step, no dependencies. If no brand is specified, everything works exactly as before.
+
+**Built-in presets:**
+
+| Preset | Base | Accent | Font |
+|--------|------|--------|------|
+| `default` | dark | `#818cf8` (indigo) | Inter |
+| `skillnet` | dark | `#6366f1` / `#22d3ee` | Plus Jakarta Sans |
+
+**CLI:** `node tools/mcp/dist/cli.js render input.uidl --brand skillnet`
+
+**MCP:** `render_page(spec: "...", brand: "skillnet")`
+
+<br>
+
 <h2>3 ways to use</h2>
 
 **CLI** — generate HTML from a spec:
@@ -178,7 +224,7 @@ claude mcp add uidl -- node /path/to/uidl/tools/mcp/dist/index.js
 ```
 uidl/
 ├── skill/           Teach any AI agent the format
-├── tools/           Parser, renderer, CLI, MCP server
+├── tools/           Parser, renderer, CLI, MCP server + themes/
 ├── examples/        Sample .uidl specs
 ├── bench/           Token comparison data
 ├── adversarial/     UIDL vs Markdown test cases

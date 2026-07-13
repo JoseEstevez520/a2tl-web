@@ -1,0 +1,14 @@
+{
+  "name": "default",
+  "base": "dark",
+  "colors": {
+    "accent": "#4f46e5",
+    "accent-2": "#4f46e5",
+    "success": "#10b981",
+    "warning": "#f59e0b",
+    "danger": "#ef4444"
+  },
+  "font": "Inter",
+  "radius": "10px",
+  "footer": "Generado con UIDL Renderer"
+}

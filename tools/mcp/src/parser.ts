@@ -1,10 +1,27 @@
 // parser.ts — UIDL v1 parser (UIDL text → JSON spec)
 
+export interface BrandConfig {
+  name: string;
+  base: 'dark' | 'light';
+  colors: {
+    accent: string;
+    'accent-2'?: string;
+    success?: string;
+    warning?: string;
+    danger?: string;
+  };
+  font?: string;
+  logo?: string;
+  radius?: string;
+  footer?: string;
+}
+
 export interface UIDLSpec {
   version: number;
   theme: string;
   layout: string;
   title: string;
+  brand?: string;
   sections: Section[];
 }
 
@@ -71,7 +88,7 @@ function getIndent(line: string): number {
 
 export function parseUIDL(text: string): UIDLSpec {
   const lines = text.split(/\r?\n/);
-  const result: UIDLSpec = { version: 1, theme: 'light', layout: 'stack', title: '', sections: [] };
+  const result: UIDLSpec = { version: 1, theme: '', layout: 'stack', title: '', sections: [] };
   let i = 0;
 
   const skip = () => { while (i < lines.length && (lines[i].trim() === '' || lines[i].trim().startsWith('//'))) i++; };
@@ -90,6 +107,7 @@ export function parseUIDL(text: string): UIDLSpec {
     if (cmd === 'theme') { result.theme = String(t[1] || 'light'); i++; }
     else if (cmd === 'layout') { result.layout = String(t[1] || 'stack'); i++; }
     else if (cmd === 'title') { result.title = String(t[1] || ''); i++; }
+    else if (cmd === 'brand') { result.brand = String(t[1] || ''); i++; }
     else break;
   }
 
@@ -168,7 +186,7 @@ export function parseUIDL(text: string): UIDLSpec {
         i++;
       }
       if (y && sec.series.length === 0) {
-        sec.series.push({ name: sec.title || 'Value', data: y });
+        sec.series.push({ name: sec.title || 'Valor', data: y });
       }
       result.sections.push(sec as any);
       continue;
@@ -235,7 +253,7 @@ export function parseUIDL(text: string): UIDLSpec {
         contentLines.push(lines[i].trimStart());
         i++;
       }
-      result.sections.push({ type: 'collapse', title: t[1] ? String(t[1]) : 'Details', content: contentLines.join('\n') });
+      result.sections.push({ type: 'collapse', title: t[1] ? String(t[1]) : 'Detalles', content: contentLines.join('\n') });
       continue;
     }
 

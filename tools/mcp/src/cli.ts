@@ -12,8 +12,11 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { resolve, basename, dirname, join } from 'node:path';
 import { exec } from 'node:child_process';
-import { parseUIDL } from './parser.js';
+import { fileURLToPath } from 'node:url';
+import { parseUIDL, type BrandConfig } from './parser.js';
 import { renderHTML } from './renderer.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function openInBrowser(filePath: string): void {
   const cmd = process.platform === 'win32' ? `start "" "${filePath}"`
@@ -34,6 +37,7 @@ Usage:
 
 Options:
   -o, --output <file>    Output file path
+  --brand <name>         Use a brand preset (e.g. skillnet)
   --no-open              Don't open in browser
   -h, --help             Show this help
 
@@ -68,9 +72,11 @@ if (!inputFile) { console.error('Missing input file. Use "uidl render <file.uidl
 
 let outputFile: string | null = null;
 let shouldOpen = true;
+let brandFlag: string | null = null;
 
 for (let i = 2; i < args.length; i++) {
   if (args[i] === '-o' || args[i] === '--output') { outputFile = args[++i]; }
+  else if (args[i] === '--brand') { brandFlag = args[++i]; }
   else if (args[i] === '--no-open') { shouldOpen = false; }
 }
 
@@ -84,10 +90,19 @@ if (inputFile === '-') {
   uidlContent = readFileSync(resolved, 'utf-8');
 }
 
+// Load brand
+function loadBrand(name: string): BrandConfig | undefined {
+  const themePath = resolve(join(__dirname, '..', 'themes', `${name}.json`));
+  if (!existsSync(themePath)) return undefined;
+  return JSON.parse(readFileSync(themePath, 'utf-8')) as BrandConfig;
+}
+
 // Parse and render
 try {
   const spec = parseUIDL(uidlContent);
-  const html = renderHTML(spec);
+  const brandName = brandFlag || spec.brand;
+  const brandConfig = brandName ? loadBrand(brandName) : undefined;
+  const html = renderHTML(spec, brandConfig);
 
   // Determine output path
   if (!outputFile) {

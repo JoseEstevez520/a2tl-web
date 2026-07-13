@@ -12,17 +12,32 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 import { writeFile, readFile, readdir } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { existsSync, mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { exec } from 'node:child_process';
-import { parseUIDL, type UIDLSpec } from './parser.js';
+import { parseUIDL, type UIDLSpec, type BrandConfig } from './parser.js';
 import { renderHTML } from './renderer.js';
 
 // ── Config ────────────────────────────────────────────────────────────
 
 const OUTPUT_DIR = resolve(join(import.meta.dirname, '..', 'output'));
 const EXAMPLES_DIR = resolve(join(import.meta.dirname, '..', '..', 'generative-ui-proto', 'uidl'));
+const THEMES_DIR = resolve(join(import.meta.dirname, '..', 'themes'));
 
 if (!existsSync(OUTPUT_DIR)) mkdirSync(OUTPUT_DIR, { recursive: true });
+
+// ── Load brand themes ────────────────────────────────────────────────
+
+const brands = new Map<string, BrandConfig>();
+
+if (existsSync(THEMES_DIR)) {
+  for (const f of readdirSync(THEMES_DIR)) {
+    if (!f.endsWith('.json')) continue;
+    try {
+      const data = JSON.parse(readFileSync(join(THEMES_DIR, f), 'utf-8')) as BrandConfig;
+      brands.set(data.name, data);
+    } catch { /* skip invalid themes */ }
+  }
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────
 
@@ -35,7 +50,19 @@ function openInBrowser(filePath: string): void {
   });
 }
 
-function parseSpec(input: string): UIDLSpec {
+function parseSpec(input: string, format: string): UIDLSpec {
+  if (format === 'json') {
+    const raw = JSON.parse(input);
+    // Adapt UIMin JSON format → UIDLSpec
+    return {
+      version: 1,
+      theme: raw.page?.theme || raw.theme || '',
+      layout: raw.page?.layout || raw.layout || 'stack',
+      title: raw.page?.title || raw.title || '',
+      brand: raw.page?.brand || raw.brand,
+      sections: raw.sections || [],
+    };
+  }
   return parseUIDL(input);
 }
 
@@ -58,6 +85,7 @@ Output: path to the generated HTML file.
 UIDL format example:
   UIDL/1
   theme dark
+  brand skillnet
   h1 "My Dashboard"
   metrics 3
     "Users" "1.2k" green
@@ -70,16 +98,21 @@ UIDL format example:
     row Alice 95 A
     row Bob 82 B
 
-Supported components: h1, h2, h3, text, hr, metrics, chart (bar/line/pie/radar/scatter), table, cards, list, code, collapse.`,
+Supported components: h1, h2, h3, text, hr, metrics, chart (bar/line/pie/radar/scatter), table, cards, list, code, collapse.
+Brand presets: ${[...brands.keys()].join(', ') || 'default, skillnet'}. Use "brand <name>" in the spec header or pass the brand parameter.`,
   {
-    spec: z.string().describe('UIDL spec string'),
+    spec: z.string().describe('UIDL or JSON spec string'),
+    format: z.enum(['uidl', 'json']).default('uidl').describe('Input format: "uidl" (default) or "json"'),
     filename: z.string().optional().describe('Output filename (without .html). Defaults to timestamp.'),
     open: z.boolean().default(true).describe('Open in browser after generating'),
+    brand: z.string().optional().describe('Brand preset name (e.g. "skillnet"). Overrides spec brand field.'),
   },
-  async ({ spec: specInput, filename, open: openBrowser }) => {
+  async ({ spec: specInput, format, filename, open: openBrowser, brand: brandOverride }) => {
     try {
-      const parsed = parseSpec(specInput);
-      const html = renderHTML(parsed);
+      const parsed = parseSpec(specInput, format);
+      const brandName = brandOverride || parsed.brand;
+      const brandConfig = brandName ? brands.get(brandName) : undefined;
+      const html = renderHTML(parsed, brandConfig);
 
       const name = filename || `page_${Date.now()}`;
       const outPath = join(OUTPUT_DIR, `${name}.html`);

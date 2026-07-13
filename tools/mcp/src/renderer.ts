@@ -1,7 +1,7 @@
 // renderer.ts — JSON spec → standalone HTML+CSS+JS string
 // Estilo "pale": minimalismo real. Chart.js via CDN.
 
-import type { UIDLSpec, Section, SeriesData, PieSlice } from './parser.js';
+import type { UIDLSpec, Section, SeriesData, PieSlice, BrandConfig } from './parser.js';
 
 const CHART_COLORS = [
   '#4f46e5','#0891b2','#059669','#d97706','#dc2626',
@@ -28,8 +28,10 @@ function esc(s: string | number): string {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function generateCSS(theme: string): string {
+function generateCSS(theme: string, brand?: BrandConfig): string {
   const dark = theme === 'dark';
+  const accent = brand?.colors.accent || (dark ? '#818cf8' : '#4f46e5');
+  const radius = brand?.radius || '10px';
   return `
     :root {
       --bg: ${dark ? '#0a0a0b' : '#fafafa'};
@@ -38,19 +40,21 @@ function generateCSS(theme: string): string {
       --text: ${dark ? '#ececef' : '#1a1a1a'};
       --text-dim: ${dark ? '#8b8b94' : '#737373'};
       --border: ${dark ? '#232328' : '#e5e5e5'};
-      --accent: ${dark ? '#818cf8' : '#4f46e5'};
+      --accent: ${accent};
+      --accent-2: ${brand?.colors['accent-2'] || accent};
       --accent-glow: ${dark ? 'rgba(129,140,248,0.12)' : 'rgba(79,70,229,0.08)'};
       --highlight-bg: ${dark ? '#15132d' : '#eef2ff'};
       --highlight-border: ${dark ? '#4338ca' : '#c7d2fe'};
       --code-bg: ${dark ? '#111113' : '#f4f4f5'};
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
+      --success: ${brand?.colors.success || '#10b981'};
+      --warning: ${brand?.colors.warning || '#f59e0b'};
+      --danger: ${brand?.colors.danger || '#ef4444'};
+      --radius: ${radius};
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
     body {
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-family: '${brand?.font || 'Inter'}', system-ui, -apple-system, 'Segoe UI', sans-serif;
       background: var(--bg); color: var(--text);
       line-height: 1.6; padding: 2.5rem 1.5rem;
       max-width: 1040px; margin: 0 auto;
@@ -62,17 +66,17 @@ function generateCSS(theme: string): string {
     p, .text-block { margin: 0.75rem 0; color: var(--text-dim); font-size: 0.925rem; }
     hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
     .metrics { display: grid; gap: 0.875rem; margin: 1.25rem 0; }
-    .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.15rem 1.35rem; transition: all 0.2s ease; position: relative; overflow: hidden; }
+    .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem 1.35rem; transition: all 0.2s ease; position: relative; overflow: hidden; }
     .metric-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); opacity: 0; transition: opacity 0.2s; }
     .metric-card:hover { background: var(--bg-hover); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,${dark ? '0.4' : '0.08'}); }
     .metric-card:hover::before { opacity: 1; }
     .metric-label { font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
     .metric-value { font-size: 1.6rem; font-weight: 700; margin: 0.3rem 0 0.15rem; letter-spacing: -0.02em; }
     .metric-note { font-size: 0.72rem; color: var(--text-dim); opacity: 0.8; }
-    .chart-wrap { margin: 1.5rem 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+    .chart-wrap { margin: 1.5rem 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; }
     .chart-wrap h3 { margin: 0 0 0.75rem; color: var(--text); font-size: 0.95rem; }
     .chart-wrap canvas { max-height: 300px; }
-    .table-wrap { margin: 1.5rem 0; overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.25rem 0; }
+    .table-wrap { margin: 1.5rem 0; overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.25rem 0; }
     .table-wrap h3 { padding: 0.75rem 1rem 0.5rem; margin: 0; color: var(--text); font-size: 0.95rem; }
     table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
     thead th { text-align: left; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); font-weight: 600; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-dim); }
@@ -80,7 +84,7 @@ function generateCSS(theme: string): string {
     tbody tr:last-child td { border-bottom: none; }
     tbody tr:hover { background: var(--bg-hover); }
     .cards { display: grid; gap: 0.875rem; margin: 1.25rem 0; }
-    .info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1.15rem 1.35rem; transition: all 0.2s ease; }
+    .info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.15rem 1.35rem; transition: all 0.2s ease; }
     .info-card:hover { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent-glow), 0 4px 12px rgba(0,0,0,${dark ? '0.3' : '0.06'}); transform: translateY(-1px); }
     .info-card-title { font-weight: 600; font-size: 0.9rem; }
     .info-card-sub { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.2rem; }
@@ -89,7 +93,7 @@ function generateCSS(theme: string): string {
     .text-insight { background: linear-gradient(135deg, var(--highlight-bg) 0%, ${dark ? 'rgba(129,140,248,0.06)' : 'rgba(79,70,229,0.04)'} 100%); border-left: 3px solid var(--accent); padding: 0.85rem 1.15rem; border-radius: 0 8px 8px 0; margin: 1.25rem 0; font-size: 0.9rem; }
     .text-dim { color: var(--text-dim); }
     .code-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.15rem; overflow-x: auto; font-family: 'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace; font-size: 0.8rem; line-height: 1.55; margin: 1rem 0; white-space: pre; }
-    .list-block { margin: 1rem 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; }
+    .list-block { margin: 1rem 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; }
     .list-block h3 { margin: 0 0 0.5rem; color: var(--text); font-size: 0.95rem; }
     .list-block ul { padding-left: 1.25rem; }
     .list-block li { margin: 0.35rem 0; color: var(--text-dim); font-size: 0.875rem; }
@@ -206,28 +210,36 @@ function generateChartJS(spec: UIDLSpec): string {
   return scripts.join('\n    ');
 }
 
-export function renderHTML(spec: UIDLSpec): string {
-  const css = generateCSS(spec.theme);
+export function renderHTML(spec: UIDLSpec, brand?: BrandConfig): string {
+  const theme = spec.theme || (brand ? brand.base : 'light');
+  const css = generateCSS(theme, brand);
   const body = spec.sections.map((s, i) => renderSection(s, i)).join('\n    ');
   const charts = generateChartJS(spec);
 
+  const fontName = brand?.font || 'Inter';
+  const fontParam = fontName.replace(/ /g, '+');
+  const fontLink = `<link href="https://fonts.googleapis.com/css2?family=${fontParam}:wght@400;500;600;700&display=swap" rel="stylesheet">`;
+  const logoHTML = brand?.logo ? `<img src="${esc(brand.logo)}" alt="${esc(brand.name)}" style="height:40px;margin-bottom:0.5rem;">` : '';
+  const footerText = brand?.footer ?? 'Generado con UIDL Renderer';
+
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${esc(spec.title || 'UIDL Page')}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  ${fontLink}
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"><\/script>
   <style>${css}</style>
 </head>
 <body>
+    ${logoHTML}
     ${body}
-    <div class="footer"><span>Generated with UIDL Renderer</span><span>${new Date().toISOString().slice(0,10)}</span></div>
+    <div class="footer"><span>${esc(footerText)}</span><span>${new Date().toISOString().slice(0,10)}</span></div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-      Chart.defaults.font.family = "'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif";
+      Chart.defaults.font.family = "'${fontName}', system-ui, -apple-system, 'Segoe UI', sans-serif";
       Chart.defaults.font.size = 12;
       ${charts}
     });
