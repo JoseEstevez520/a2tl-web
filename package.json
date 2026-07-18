@@ -29,12 +29,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JoseEstevez520/uidl.git"
+    "url": "git+https://github.com/JoseEstevez520/a2tl-web.git"
   },
   "author": "Jose Estevez",
   "license": "MIT",
-  "homepage": "https://github.com/JoseEstevez520/uidl#readme",
+  "homepage": "https://github.com/JoseEstevez520/a2tl-web#readme",
   "bugs": {
-    "url": "https://github.com/JoseEstevez520/uidl/issues"
+    "url": "https://github.com/JoseEstevez520/a2tl-web/issues"
   }
 }

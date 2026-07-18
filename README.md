@@ -76,8 +76,8 @@ A2TL-Web is built for data-rich pages. For pure prose or code, Markdown is more 
 <h2>Quick start</h2>
 
 ```bash
-git clone https://github.com/JoseEstevez520/uidl.git
-cd uidl
+git clone https://github.com/JoseEstevez520/a2tl-web.git
+cd a2tl-web
 node tools/generate.js examples/analytics.uidl output/analytics.html
 ```
 
@@ -144,6 +144,7 @@ chart pie "Traffic Sources"
 <tr><td>Lists</td><td><code>list "Title"</code></td><td><code>- "Item"</code> per line</td></tr>
 <tr><td>Code</td><td><code>code lang</code></td><td>Indented lines below</td></tr>
 <tr><td>Separator</td><td><code>hr</code></td><td>Horizontal rule</td></tr>
+<tr><td>Collapse</td><td><code>collapse "Title"</code></td><td>Expandable/collapsible section</td></tr>
 </table>
 
 <p>Text styles: <code>dim</code> (muted) · <code>highlight</code> (alert) · <code>insight</code> (info)</p>
@@ -216,7 +217,7 @@ node tools/generate.js input.uidl output.html
 **MCP Server** — let your AI agent call `render_page` directly:
 ```bash
 cd tools/mcp && npm install && npm run build
-claude mcp add a2tl-web -- node /path/to/uidl/tools/mcp/dist/index.js
+claude mcp add a2tl-web -- node /path/to/a2tl-web/tools/mcp/dist/index.js
 ```
 
 **Agent skill** — copy [`skill/uidl.md`](skill/uidl.md) into your prompt system. The agent learns the format natively.
