@@ -210,7 +210,7 @@ export function renderHTML(spec) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${esc(spec.title || 'UIDL Page')}</title>
+  <title>${esc(spec.title || 'A2TL-Web Page')}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"><\/script>
@@ -218,7 +218,7 @@ export function renderHTML(spec) {
 </head>
 <body>
     ${body}
-    <div class="footer"><span>Generated with UIDL Renderer</span><span>${new Date().toISOString().slice(0, 10)}</span></div>
+    <div class="footer"><span>Generated with A2TL-Web</span><span>${new Date().toISOString().slice(0, 10)}</span></div>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
       Chart.defaults.font.family = "'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif";

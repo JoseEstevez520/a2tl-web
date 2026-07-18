@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// tests/test.js — UIDL parser + renderer tests (no dependencies)
+// tests/test.js — A2TL-Web parser + renderer tests (no dependencies)
 
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';

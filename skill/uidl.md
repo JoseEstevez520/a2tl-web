@@ -1,14 +1,16 @@
-# UIDL Skill — for AI agents
+# A2TL-Web Skill — for AI agents
 
-Copy this file into your skill/prompt system so the agent can generate UIDL without reading examples every time.
+A2TL-Web is part of the **A2TL** family (**A**gent **t**o **T**ransformation **L**anguage) — compact formats where AI agents describe *what* to show and a renderer decides *how*. Siblings: **a2tl-web** (web pages), **a2tl-video** (videos).
+
+Copy this file into your skill/prompt system so the agent can generate A2TL-Web specs without reading examples every time.
 
 ## When to use
 
-When the user asks to generate a web page, dashboard, report, or any standalone UI. Instead of writing HTML+CSS+JS, write a UIDL spec and render it.
+When the user asks to generate a web page, dashboard, report, or any standalone UI. Instead of writing HTML+CSS+JS, write an A2TL-Web spec and render it.
 
 **Advantage:** ~4x fewer tokens = faster, cheaper, same visual result.
 
-## UIDL v1 format
+## A2TL-Web format (UIDL/1)
 
 ```
 UIDL/1

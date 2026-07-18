@@ -1,4 +1,4 @@
-<h1 align="center">uidl</h1>
+<h1 align="center">A2TL-Web</h1>
 <p align="center">
   <strong>A compact format for AI-generated web pages.</strong><br>
   <em>Same cost as Markdown. But you get charts, cards, and styling.</em>
@@ -12,10 +12,14 @@
 
 <br>
 
-When an LLM generates a dashboard, it writes thousands of tokens of HTML, CSS, and JS. Most of it is boilerplate. UIDL captures the same page in a compact spec that a local renderer expands instantly.
+**A2TL-Web** is part of the **A2TL** family (**A**gent **t**o **T**ransformation **L**anguage) — compact formats where AI agents describe *what* to show and a renderer decides *how*. Siblings:
+- **a2tl-web** (this repo) — generates web pages
+- **a2tl-video** — generates videos
+
+When an LLM generates a dashboard, it writes thousands of tokens of HTML, CSS, and JS. Most of it is boilerplate. A2TL-Web captures the same page in a compact spec that a local renderer expands instantly.
 
 ```
-AI writes UIDL (~340 tok)  →  renderer (ms)  →  standalone HTML page
+AI writes A2TL-Web (~340 tok)  →  renderer (ms)  →  standalone HTML page
 ```
 
 <br>
@@ -26,7 +30,7 @@ AI writes UIDL (~340 tok)  →  renderer (ms)  →  standalone HTML page
 <tr>
 <th width="34%"></th>
 <th width="22%">Markdown</th>
-<th width="22%">UIDL</th>
+<th width="22%">A2TL-Web</th>
 <th width="22%">Raw HTML</th>
 </tr>
 <tr>
@@ -45,15 +49,15 @@ AI writes UIDL (~340 tok)  →  renderer (ms)  →  standalone HTML page
 
 <br>
 
-UIDL and Markdown cost roughly the same. The difference is what you get.
+A2TL-Web and Markdown cost roughly the same. The difference is what you get.
 
 We ran 11 adversarial tests to find where each format wins:
 
 <table width="100%">
 <tr>
 <th width="40%">Content type</th>
-<th width="30%">UIDL vs Markdown</th>
-<th width="30%">What UIDL adds</th>
+<th width="30%">A2TL-Web vs Markdown</th>
+<th width="30%">What A2TL-Web adds</th>
 </tr>
 <tr><td>Dashboards & metrics</td><td><strong>11% smaller</strong></td><td>Charts, KPI cards, themes</td></tr>
 <tr><td>Data tables</td><td><strong>11% smaller</strong></td><td>Styled tables, hover</td></tr>
@@ -65,7 +69,7 @@ We ran 11 adversarial tests to find where each format wins:
 
 <br>
 
-UIDL is built for data-rich pages. For pure prose or code, Markdown is more compact. Full test data in [`adversarial/`](adversarial/).
+A2TL-Web is built for data-rich pages. For pure prose or code, Markdown is more compact. Full test data in [`adversarial/`](adversarial/).
 
 <br>
 
@@ -148,7 +152,7 @@ chart pie "Traffic Sources"
 
 <h2>Brand / Theming</h2>
 
-UIDL specs look the same regardless of who uses them. Branding lives in a JSON preset that the renderer applies — the LLM never generates CSS.
+A2TL-Web specs look the same regardless of who uses them. Branding lives in a JSON preset that the renderer applies — the LLM never generates CSS.
 
 Add `brand <name>` to your spec header:
 
@@ -194,7 +198,7 @@ That's it. The renderer swaps colors, font, and footer. No build step, no depend
 
 <h2>Extending: custom components</h2>
 
-UIDL ships with 10 components. If you need more, add your own -- it's ~15 lines of code.
+A2TL-Web ships with 10 components. If you need more, add your own -- it's ~15 lines of code.
 
 See [docs/extending.md](docs/extending.md) for a step-by-step guide.
 
@@ -212,7 +216,7 @@ node tools/generate.js input.uidl output.html
 **MCP Server** — let your AI agent call `render_page` directly:
 ```bash
 cd tools/mcp && npm install && npm run build
-claude mcp add uidl -- node /path/to/uidl/tools/mcp/dist/index.js
+claude mcp add a2tl-web -- node /path/to/uidl/tools/mcp/dist/index.js
 ```
 
 **Agent skill** — copy [`skill/uidl.md`](skill/uidl.md) into your prompt system. The agent learns the format natively.
@@ -232,12 +236,12 @@ claude mcp add uidl -- node /path/to/uidl/tools/mcp/dist/index.js
 <h2>Project structure</h2>
 
 ```
-uidl/
+a2tl-web/
 ├── skill/           Teach any AI agent the format
 ├── tools/           Parser, renderer, CLI, MCP server + themes/
 ├── examples/        Sample .uidl specs
 ├── bench/           Token comparison data
-├── adversarial/     UIDL vs Markdown test cases
+├── adversarial/     A2TL-Web vs Markdown test cases
 └── tests/           86 tests
 ```
 
@@ -250,6 +254,7 @@ npm test    # run all tests
 ---
 
 <p align="center">
+  <strong>A2TL-Web</strong> — part of the <a href="#">A2TL</a> family (Agent to Transformation Language).<br>
   Built during research on token-efficient UI generation for AI agents.<br>
   MIT License
 </p>

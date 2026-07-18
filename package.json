@@ -1,11 +1,11 @@
 {
-  "name": "uidl",
+  "name": "a2tl-web",
   "version": "1.1.0",
   "type": "module",
-  "description": "Compact DSL that AI agents generate instead of raw HTML. A local renderer expands it to standalone pages with charts. 4x fewer tokens.",
+  "description": "A2TL-Web: compact format where AI agents describe what to show and a renderer builds the page. Part of the A2TL family (Agent to Transformation Language) alongside a2tl-video.",
   "main": "tools/parser.js",
   "bin": {
-    "uidl": "tools/cli.js"
+    "a2tl-web": "tools/cli.js"
   },
   "scripts": {
     "test": "node tests/test.js",
@@ -18,7 +18,8 @@
     "README.md"
   ],
   "keywords": [
-    "uidl",
+    "a2tl",
+    "a2tl-web",
     "generative-ui",
     "html-generator",
     "mcp",

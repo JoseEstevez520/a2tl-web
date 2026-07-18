@@ -1,6 +1,6 @@
-# Extending UIDL with custom components
+# Extending A2TL-Web with custom components
 
-UIDL ships with 10 components. Adding a new one takes ~15 lines across two files. This guide walks through the pattern and a concrete example.
+A2TL-Web ships with 10 components. Adding a new one takes ~15 lines across two files. This guide walks through the pattern and a concrete example.
 
 ## The pattern
 
@@ -21,7 +21,7 @@ That's it. No registration, no config files, no build plugins.
 
 ## Example: adding a `progress` component
 
-Goal: render a styled progress bar from this UIDL syntax:
+Goal: render a styled progress bar from this syntax:
 
 ```
 progress 75 "Security Training" green
@@ -91,7 +91,7 @@ This uses:
 
 ### Result
 
-This UIDL:
+This spec:
 
 ```
 UIDL/1
@@ -140,6 +140,6 @@ The pattern: parse builds a typed object, renderer turns it into HTML. Component
 ## What NOT to do
 
 - **Don't modify the header keywords.** `UIDL/1`, `theme`, `layout`, `brand` are parsed in a separate loop before components. Leave them alone.
-- **Don't add components that need JavaScript state.** The renderer produces static HTML (Chart.js is the one exception, and it's self-contained). If your component needs event handlers or state management, it doesn't belong in UIDL.
+- **Don't add components that need JavaScript state.** The renderer produces static HTML (Chart.js is the one exception, and it's self-contained). If your component needs event handlers or state management, it doesn't belong in A2TL-Web.
 - **Keep syntax consistent.** Component name at column 0, sub-items indented 2 spaces. Strings with spaces in double quotes. Colors as the last positional argument.
 - **Don't forget the type union.** TypeScript will catch this if you skip it -- the parser won't compile if you push a shape that doesn't match `Section`.

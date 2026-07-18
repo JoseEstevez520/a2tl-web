@@ -220,14 +220,14 @@ export function renderHTML(spec: UIDLSpec, brand?: BrandConfig): string {
   const fontParam = fontName.replace(/ /g, '+');
   const fontLink = `<link href="https://fonts.googleapis.com/css2?family=${fontParam}:wght@400;500;600;700&display=swap" rel="stylesheet">`;
   const logoHTML = brand?.logo ? `<img src="${esc(brand.logo)}" alt="${esc(brand.name)}" style="height:40px;margin-bottom:0.5rem;">` : '';
-  const footerText = brand?.footer ?? 'Generado con UIDL Renderer';
+  const footerText = brand?.footer ?? 'Generado con A2TL-Web';
 
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${esc(spec.title || 'UIDL Page')}</title>
+  <title>${esc(spec.title || 'A2TL-Web Page')}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   ${fontLink}
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4"><\/script>

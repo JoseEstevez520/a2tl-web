@@ -1,7 +1,7 @@
 {
-  "name": "mcp-ui-renderer",
+  "name": "mcp-a2tl-web",
   "version": "1.2.0",
-  "description": "MCP server: render_page tool — UIDL spec → standalone HTML page",
+  "description": "MCP server: render_page tool — A2TL-Web spec → standalone HTML page",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

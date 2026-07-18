@@ -11,7 +11,8 @@ const args = process.argv.slice(2);
 
 if (args.length === 0 || args.includes('-h') || args.includes('--help')) {
   console.log(`
-uidl — generate HTML pages from UIDL specs
+a2tl-web — generate HTML pages from A2TL-Web specs
+Part of the A2TL family (Agent to Transformation Language).
 
 Usage:
   node generate.js <file.uidl> [output.html]
@@ -48,7 +49,7 @@ const htmlTokens = Math.round(html.length / 3.5);
 const savings = ((1 - uidlTokens / htmlTokens) * 100).toFixed(0);
 
 console.log(`${inputFile} → ${outputFile}`);
-console.log(`  UIDL:    ${uidlText.length} bytes (~${uidlTokens} tokens)`);
+console.log(`  Spec:    ${uidlText.length} bytes (~${uidlTokens} tokens)`);
 console.log(`  HTML:    ${html.length} bytes (~${htmlTokens} tokens)`);
 console.log(`  Savings: ${savings}%`);
 console.log(`  Theme:   ${spec.theme}`);

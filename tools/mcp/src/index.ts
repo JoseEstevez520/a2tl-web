@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * mcp-ui-renderer — MCP server for rendering UIDL specs as HTML pages.
+ * mcp-a2tl-web — MCP server for rendering A2TL-Web specs as HTML pages.
+ * Part of the A2TL family (Agent to Transformation Language).
  *
  * Tools:
- *   render_page(spec, format?, filename?) — UIDL/JSON → standalone HTML, opens in browser
+ *   render_page(spec, format?, filename?) — A2TL-Web/JSON → standalone HTML, opens in browser
  *   list_examples()                       — list available example specs
  */
 
@@ -69,7 +70,7 @@ function parseSpec(input: string, format: string): UIDLSpec {
 // ── Server ────────────────────────────────────────────────────────────
 
 const server = new McpServer({
-  name: 'mcp-ui-renderer',
+  name: 'mcp-a2tl-web',
   version: '1.0.0',
 });
 
@@ -77,12 +78,13 @@ const server = new McpServer({
 
 server.tool(
   'render_page',
-  `Render a UIDL spec as a standalone HTML page and open it in the browser.
+  `Render an A2TL-Web spec as a standalone HTML page and open it in the browser.
+A2TL-Web is part of the A2TL family (Agent to Transformation Language).
 
-Input: a UIDL spec string (compact text format) or JSON spec.
+Input: an A2TL-Web spec string (compact text format) or JSON spec.
 Output: path to the generated HTML file.
 
-UIDL format example:
+A2TL-Web format example:
   UIDL/1
   theme dark
   brand skillnet
@@ -101,8 +103,8 @@ UIDL format example:
 Supported components: h1, h2, h3, text, hr, metrics, chart (bar/line/pie/radar/scatter), table, cards, list, code, collapse.
 Brand presets: ${[...brands.keys()].join(', ') || 'default, skillnet'}. Use "brand <name>" in the spec header or pass the brand parameter.`,
   {
-    spec: z.string().describe('UIDL or JSON spec string'),
-    format: z.enum(['uidl', 'json']).default('uidl').describe('Input format: "uidl" (default) or "json"'),
+    spec: z.string().describe('A2TL-Web or JSON spec string'),
+    format: z.enum(['uidl', 'json']).default('uidl').describe('Input format: "uidl" (default, A2TL-Web text format) or "json"'),
     filename: z.string().optional().describe('Output filename (without .html). Defaults to timestamp.'),
     open: z.boolean().default(true).describe('Open in browser after generating'),
     brand: z.string().optional().describe('Brand preset name (e.g. "skillnet"). Overrides spec brand field.'),
@@ -146,7 +148,7 @@ Brand presets: ${[...brands.keys()].join(', ') || 'default, skillnet'}. Use "bra
 
 server.tool(
   'list_examples',
-  'List available UIDL example specs that can be used as reference or rendered.',
+  'List available A2TL-Web example specs that can be used as reference or rendered.',
   {},
   async () => {
     try {

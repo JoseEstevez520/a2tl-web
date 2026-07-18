@@ -1,4 +1,4 @@
-// parser.js — UIDL v1 parser (UIDL text → JSON spec)
+// parser.js — A2TL-Web parser (UIDL/1 text → JSON spec)
 const COLORS = new Set([
     'red', 'orange', 'yellow', 'green', 'blue', 'purple', 'cyan', 'pink', 'white', 'black',
     'gray', 'grey', 'indigo', 'teal', 'emerald', 'amber', 'rose', 'violet', 'lime', 'sky',
